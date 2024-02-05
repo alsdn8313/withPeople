@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+   
+   <!-- 게시판 글 작성 -->
+   <insert id="insert">
+	   INSERT INTO WP_ITEMS(    BNO 
+	   					      , I_NO 
+	   					      , ITEM_NM 
+	   					      , PRICE_ONE
+	   					      , PRICE_TWO  
+	   					      , ITEM_COUNT
+	   					      , KEY_WORD)
+	                 VALUES(    WP_ITEMS_SEQ.NEXTVAL 
+	                 		  , #{i_no}
+	                 		  , #{item_nm}
+	                 		  , #{price_one} 
+	                 		  , #{price_two}
+	                 		  , #{item_count}
+	                 		  , #{key_word} )
+   
+   </insert>
+   
+   <!-- 게시판 글 조회(전체) -->
+   <select id="list" resultType="kr.co.vo.BoardVO">
+  	    SELECT   BNO
+		   , I_NO
+		   , ITEM_NM
+		   , PRICE_ONE
+		   , PRICE_TWO
+		   , ITEM_COUNT
+		   , KEY_WORD
+		   , REGDATE
+	    FROM WP_ITEMS
+	    WHERE 1=1
+		ORDER BY BNO 
+   </select>
+   
+   
+   <!-- 게시판 글 조회(페이징) -->
+   <select id="listPage" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
+   	    SELECT 
+   	    	 BNO
+		   , I_NO
+		   , ITEM_NM
+		   , PRICE_ONE
+		   , PRICE_TWO
+		   , ITEM_COUNT
+		   , KEY_WORD
+		   , REGDATE
+		FROM(   
+	   	    SELECT   BNO
+				   , I_NO
+				   , ITEM_NM
+				   , PRICE_ONE
+				   , PRICE_TWO
+				   , ITEM_COUNT
+				   , KEY_WORD
+				   , REGDATE
+				   , ROW_NUMBER() OVER(ORDER BY BNO) AS RNUM
+			  FROM WP_ITEMS
+			  WHERE 1=1
+			  <include refid="search"></include>
+			 ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}	 
+		ORDER BY BNO 
+   </select>
+   
+   <select id="listCount" resultType="int">
+		SELECT COUNT(BNO)
+		  FROM WP_ITEMS
+		 WHERE 1=1 
+		 <include refid="search"></include>
+		 AND BNO > 0
+   </select>
+   
+   <sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND ITEM_NM LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND KEY_WORD LIKE '%' || #{keyword} || '%'</if>
+			<!-- <if test="searchType == 'w'.toString()">AND WRITER LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if> -->
+		</if>
+	</sql>
+   
+   <insert id="insertItem">
+	   INSERT INTO WP_ITEMS_SRCH( S_NUM  
+	   					      , S_ITEM 
+	   					      , S_lPRICE
+	   					      )
+	                 VALUES(     
+	                 		  #{s_num}
+	                 		  , #{s_item}
+	                 		  , #{s_lprice}
+	                 		)   
+   
+   </insert>
+   
+   
+   <select id="listItem" resultType="kr.co.vo.BoardVO">
+  	    SELECT
+		   , S_NUM
+		   , S_ITEM
+		   , S_lPRICE
+	    FROM WP_ITEMS_SRCH
+	    WHERE 1=1
+		ORDER BY S_NUM 
+   </select>
+   
+   <delete id="delete">
+		DELETE 
+		  FROM WP_ITEMS_SRCH
+		 <!-- WHERE S_NUM = #{s_num} -->
+	</delete>
+	
+	
+	<select id="excelList" resultType="kr.co.vo.BoardVO">
+  	    SELECT
+		     S_NUM
+		   , S_ITEM
+		   , S_lPRICE
+	    FROM WP_ITEMS_SRCH
+	    WHERE 1=1
+		ORDER BY TO_NUMBER(S_NUM) 
+   </select>
+   
+   
+</mapper>
