@@ -171,4 +171,21 @@ public class BoardController {
 		service.delete(boardVO);
 	}
 	
+	
+	@RequestMapping(value = "/listExcel", method = RequestMethod.GET)
+	public String listExcel(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
+		logger.info("listExcel");
+		
+		model.addAttribute("listAll",service.excelList());
+		model.addAttribute("list",service.excelListPage(scri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(service.excelListCount(scri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "board/searchView";
+		
+	}
 }

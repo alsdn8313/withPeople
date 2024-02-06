@@ -58,4 +58,16 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return sqlSession.selectList("boardMapper.excelList");
 	}
+	
+	@Override
+	public List<BoardVO> excelListPage(SearchCriteria scri) throws Exception {
+		
+		return sqlSession.selectList("boardMapper.excelListPage", scri);
+	}
+
+	@Override
+	public int excelListCount(SearchCriteria scri) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("boardMapper.excelListCount", scri);
+	}
 }

@@ -126,5 +126,41 @@
 		ORDER BY TO_NUMBER(S_NUM) 
    </select>
    
+   <!-- 게시판 글 조회(페이징) -->
+   <select id="excelListPage" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
+   	    SELECT 
+   	    	  S_NUM
+		   , S_ITEM
+		   , S_lPRICE
+		FROM(   
+	   	    SELECT   S_NUM
+				   , S_ITEM
+				   , S_lPRICE
+				   , ROW_NUMBER() OVER(ORDER BY TO_NUMBER(S_NUM)) AS RNUM
+			  FROM WP_ITEMS_SRCH
+			  WHERE 1=1
+			  <include refid="searchExcel"></include>
+			 ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}	 
+		ORDER BY TO_NUMBER(S_NUM) 
+   </select>
+   
+   <select id="excelListCount" resultType="int">
+		SELECT COUNT(S_NUM)
+		  FROM WP_ITEMS_SRCH
+		 WHERE 1=1 
+		 <include refid="search"></include>
+		 AND TO_NUMBER(S_NUM) > 0
+   </select>
+   
+   <sql id="searchExcel">
+		<if test="searchType != null">
+			<!-- <if test="searchType == 't'.toString()">AND ITEM_NM LIKE '%' || #{keyword} || '%'</if>-->
+			<if test="searchType == 'c'.toString()">AND S_ITEM LIKE '%' || #{keyword} || '%'</if>
+			<!-- <if test="searchType == 'w'.toString()">AND WRITER LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if> -->
+		</if>
+	</sql>
+   
    
 </mapper>

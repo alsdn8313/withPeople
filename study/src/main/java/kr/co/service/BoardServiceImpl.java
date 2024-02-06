@@ -58,4 +58,16 @@ public class BoardServiceImpl implements BoardService {
 	
 		return dao.excelList();
 	}
+	
+	@Override
+	public List<BoardVO> excelListPage(SearchCriteria scri) throws Exception {
+	
+		return dao.excelListPage(scri);
+	}
+
+	@Override
+	public int excelListCount(SearchCriteria scri) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.excelListCount(scri);
+	}
 }

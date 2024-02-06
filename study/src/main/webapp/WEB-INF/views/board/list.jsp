@@ -15,6 +15,8 @@
 			 li {list-style: none;  padding: 6px; float: left;}
 			 input {border: none;}
 			 
+			 .col-md-offset-3 {margin-left: 650px;}
+			 
 			#Progress_Loading
 			{
 			 position: absolute;
@@ -86,15 +88,15 @@
 					                    var lprice = items[j].lprice;
 					                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 
-					                    var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
+					                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
 					         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
 					         			html += "<td name='s_title' id='s_title' style='width: 800; text-align: left;'>" + title + "</td>";
 					         			html += "<td name='s_lprice' id='s_lprice' style='width: 100; text-align: right;'>" + lprice + "</td>";
-					         			html += "</tr>";
+					         			html += "</tr>"; */
 					        	 	
 					        	 		//html += "</table>";
 					        	 		
-					        	 		$("#display_1").append(html);
+					        	 		//$("#display_1").append(html);
 					        	 		insertItem(i,title,lprice);
 					        	 		return;
 			                    	}
@@ -113,14 +115,13 @@
 		        			$('#Progress_Loading').hide();  
 		        			$('#mask').hide();
 		        			
-		        			var a = document.getElementsByName("s_num");
-		        			var b = a[i].value;
-		        			
 			        		}
 			            });//ajax end
 			            
 					} //for end	
-			
+					
+			 		window.open("/board/listExcel", "_blank", "width=2200, height=1200");
+					
 		 		},0); //settimeout end
 	
 			}); //onclick end
@@ -180,6 +181,10 @@
 				<%@include file="nav.jsp" %>
 			</div>
 			<hr />
+			
+			<div>
+				<button type="button" id="btn" class="btn btn-default">조회</button> 
+			</div>
 			
 			<c:forEach items="${listAll}" var="list">
 				<input type="hidden" name="s_word" value="${list.key_word}" />
@@ -255,13 +260,13 @@
 		</div>
 		
 		
-		<br/><br/>
+		<!--<br/><br/>
 		<hr/>
 		<br/>
 		<div>
 		<section id="search">
 		<button type="button" id="btn" class="btn btn-default">조회</button> 
-		<button type="button" id="excelDown" class="btn btn-default">엑셀다운로드</button>
+		 <button type="button" id="excelDown" class="btn btn-default">엑셀다운로드</button>
 			<br/><br/>
 			<div id="display">
 				<form name="frm" method="post">
@@ -275,7 +280,7 @@
 				</form>
 			</div>
 		</section>
-		</div>			
+		</div> -->			
 	</body>
 	
 	<!-- <script>
