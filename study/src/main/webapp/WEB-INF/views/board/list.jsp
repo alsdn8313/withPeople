@@ -57,10 +57,12 @@
 					$(".i_tr").empty();
 					
 					var key_word = document.getElementsByName("s_word");
+					var s_price = document.getElementsByName("s_price");
 					
 			 		for(var i = 0; i < key_word.length; i++){
-			 		//for(var i = 0; i < 6; i++){
+			 		//for(var i = 0; i < 20; i++){
 			 			var data = "input=" + key_word[i].value;
+			 			var price = s_price[i].value;
 			 			//var data = "input=FANUC A06B-6081-H101";
 			 			//getItem(data);
 			 			
@@ -87,6 +89,9 @@
 					                    var title = v_title.replace(/b|\/|<|>/g,"");
 					                    var lprice = items[j].lprice;
 					                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+					                    var maker = items[j].maker;
+					                    var brand = items[j].brand;
+					                    var mall_nm = items[j].mallName;
 
 					                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
 					         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
@@ -97,7 +102,7 @@
 					        	 		//html += "</table>";
 					        	 		
 					        	 		//$("#display_1").append(html);
-					        	 		insertItem(i,title,lprice);
+					        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm);
 					        	 		return;
 			                    	}
 			                    }
@@ -126,7 +131,7 @@
 	
 			}); //onclick end
 			
-			$("#excelDown").on("click", function(){
+			/* $("#excelDown").on("click", function(){
 				
 				var regForm = $("form[name='frm'] .chk").length;
 				
@@ -137,15 +142,15 @@
 					window.location = "/board/excelDown";
 				}
 				
-			});
+			}); */
 			
 		});
 	 	
-		function insertItem(s_num, s_item, s_lprice) {
+		function insertItem(s_num, s_item, s_lprice, s_maker, s_brand, s_price, s_mall_nm) {
 			
 			s_num = Number(s_num + 1);
 			
-			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice;
+			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice+"&s_maker="+s_maker+"&s_brand="+s_brand+"&s_price="+s_price+"&s_mall_nm="+s_mall_nm;
 			
 			$.ajax({
 			    url: "/board/insertItem",
@@ -183,17 +188,18 @@
 			<hr />
 			
 			<div>
-				<button type="button" id="btn" class="btn btn-default">조회</button> 
+				<button type="button" id="btn" class="btn btn-default">최저가 조회</button> 
 			</div>
 			
 			<c:forEach items="${listAll}" var="list">
+				<input type="hidden" name="s_price" value="${list.price_two}" />
 				<input type="hidden" name="s_word" value="${list.key_word}" />
 			</c:forEach>
 			
 			<section>
 				<form role="form" method="get">
 					<table class="table table-hover">
-						<tr><th>번호</th><th>상품번호</th><th>상품명</th><th>가격_1</th><th>가격_2</th><th>수량</th><th>검색어</th><th>등록일</th></tr>
+						<tr><th>번호</th><th>상품번호</th><th>상품명</th><th>가격_1</th><th>가격_2</th><th>수량</th><th>검색어</th><!-- <th>등록일</th> --></tr>
 
 					<c:forEach items="${list}" var="list">
 						<tr>
@@ -204,7 +210,7 @@
 							<td><input name="price_two" 	value="${list.price_two}" 	style="width: 100px;" readonly="readonly"/></td>
 							<td><input name="item_count" 	value="${list.item_count}" 	style="width: 50px;" readonly="readonly"/></td>
 							<td><input name="key_word" 		value="${list.key_word}" 	style="width: 300px;" readonly="readonly"/></td>
-							<td><fmt:formatDate value="${list.regdate}" pattern="yyyy-MM-dd" /></td>
+							<%-- <td><fmt:formatDate value="${list.regdate}" pattern="yyyy-MM-dd" /></td> --%>
 						</tr>
 					</c:forEach>
 

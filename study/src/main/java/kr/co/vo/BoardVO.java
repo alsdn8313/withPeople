@@ -16,6 +16,10 @@ public class BoardVO {
 	private String s_num;
 	private String s_item;
 	private String s_lprice;
+	private String s_maker;
+	private String s_brand;
+	private String s_price;
+	private String s_mall_nm;
 	
 	
 	public int getBno() {
@@ -83,6 +87,30 @@ public class BoardVO {
 	}
 	public void setS_lprice(String s_lprice) {
 		this.s_lprice = s_lprice;
+	}
+	public String getS_maker() {
+		return s_maker;
+	}
+	public void setS_maker(String s_maker) {
+		this.s_maker = s_maker;
+	}
+	public String getS_brand() {
+		return s_brand;
+	}
+	public void setS_brand(String s_brand) {
+		this.s_brand = s_brand;
+	}
+	public String getS_price() {
+		return s_price;
+	}
+	public void setS_price(String s_price) {
+		this.s_price = s_price;
+	}
+	public String getS_mall_nm() {
+		return s_mall_nm;
+	}
+	public void setS_mall_nm(String s_mall_nm) {
+		this.s_mall_nm = s_mall_nm;
 	}
 	
 	

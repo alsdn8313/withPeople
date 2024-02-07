@@ -6,15 +6,15 @@
    
    <!-- 게시판 글 작성 -->
    <insert id="insert">
-	   INSERT INTO WP_ITEMS(    BNO 
-	   					      , I_NO 
+	   INSERT INTO item.WP_ITEMS( 
+	   					       I_NO 
 	   					      , ITEM_NM 
 	   					      , PRICE_ONE
 	   					      , PRICE_TWO  
 	   					      , ITEM_COUNT
 	   					      , KEY_WORD)
-	                 VALUES(    WP_ITEMS_SEQ.NEXTVAL 
-	                 		  , #{i_no}
+	                 VALUES(   
+	                 		    #{i_no}
 	                 		  , #{item_nm}
 	                 		  , #{price_one} 
 	                 		  , #{price_two}
@@ -32,8 +32,7 @@
 		   , PRICE_TWO
 		   , ITEM_COUNT
 		   , KEY_WORD
-		   , REGDATE
-	    FROM WP_ITEMS
+	    FROM item.WP_ITEMS
 	    WHERE 1=1
 		ORDER BY BNO 
    </select>
@@ -49,7 +48,6 @@
 		   , PRICE_TWO
 		   , ITEM_COUNT
 		   , KEY_WORD
-		   , REGDATE
 		FROM(   
 	   	    SELECT   BNO
 				   , I_NO
@@ -58,9 +56,8 @@
 				   , PRICE_TWO
 				   , ITEM_COUNT
 				   , KEY_WORD
-				   , REGDATE
 				   , ROW_NUMBER() OVER(ORDER BY BNO) AS RNUM
-			  FROM WP_ITEMS
+			  FROM item.WP_ITEMS
 			  WHERE 1=1
 			  <include refid="search"></include>
 			 ) MP
@@ -70,7 +67,7 @@
    
    <select id="listCount" resultType="int">
 		SELECT COUNT(BNO)
-		  FROM WP_ITEMS
+		  FROM item.WP_ITEMS
 		 WHERE 1=1 
 		 <include refid="search"></include>
 		 AND BNO > 0
@@ -86,14 +83,22 @@
 	</sql>
    
    <insert id="insertItem">
-	   INSERT INTO WP_ITEMS_SRCH( S_NUM  
+	   INSERT INTO item.WP_ITEMS_SRCH( S_NUM  
 	   					      , S_ITEM 
 	   					      , S_lPRICE
+	   					      , S_MAKER
+	   					      , S_BRAND
+	   					      , S_MALL_NM
+	   					      , S_PRICE
 	   					      )
 	                 VALUES(     
 	                 		  #{s_num}
 	                 		  , #{s_item}
 	                 		  , #{s_lprice}
+	                 		  , #{s_maker}
+	                 		  , #{s_brand}
+	                 		  , #{s_mall_nm}
+	                 		  , #{s_price}
 	                 		)   
    
    </insert>
@@ -104,14 +109,18 @@
 		   , S_NUM
 		   , S_ITEM
 		   , S_lPRICE
-	    FROM WP_ITEMS_SRCH
+		   , S_MAKER
+		   , S_BRAND
+		   , S_MALL_NM
+		   , S_PRICE
+	    FROM item.WP_ITEMS_SRCH
 	    WHERE 1=1
-		ORDER BY S_NUM 
+		ORDER BY CAST(S_NUM AS INTEGER) 
    </select>
    
    <delete id="delete">
 		DELETE 
-		  FROM WP_ITEMS_SRCH
+		  FROM item.WP_ITEMS_SRCH
 		 <!-- WHERE S_NUM = #{s_num} -->
 	</delete>
 	
@@ -121,9 +130,13 @@
 		     S_NUM
 		   , S_ITEM
 		   , S_lPRICE
-	    FROM WP_ITEMS_SRCH
+		   , S_MAKER
+		   , S_BRAND
+		   , S_MALL_NM
+		   , S_PRICE
+	    FROM item.WP_ITEMS_SRCH
 	    WHERE 1=1
-		ORDER BY TO_NUMBER(S_NUM) 
+		ORDER BY CAST(S_NUM AS INTEGER) 
    </select>
    
    <!-- 게시판 글 조회(페이징) -->
@@ -132,25 +145,33 @@
    	    	  S_NUM
 		   , S_ITEM
 		   , S_lPRICE
+		   , S_MAKER
+		   , S_BRAND
+		   , S_MALL_NM
+		   , S_PRICE
 		FROM(   
 	   	    SELECT   S_NUM
 				   , S_ITEM
 				   , S_lPRICE
-				   , ROW_NUMBER() OVER(ORDER BY TO_NUMBER(S_NUM)) AS RNUM
-			  FROM WP_ITEMS_SRCH
+				   , S_MAKER
+				   , S_BRAND
+				   , S_MALL_NM
+				   , S_PRICE
+				   , ROW_NUMBER() OVER(ORDER BY CAST(S_NUM AS INTEGER)) AS RNUM
+			  FROM item.WP_ITEMS_SRCH
 			  WHERE 1=1
 			  <include refid="searchExcel"></include>
 			 ) MP
 		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}	 
-		ORDER BY TO_NUMBER(S_NUM) 
+		ORDER BY CAST(S_NUM AS INTEGER) 
    </select>
    
    <select id="excelListCount" resultType="int">
 		SELECT COUNT(S_NUM)
-		  FROM WP_ITEMS_SRCH
+		  FROM item.WP_ITEMS_SRCH
 		 WHERE 1=1 
 		 <include refid="search"></include>
-		 AND TO_NUMBER(S_NUM) > 0
+		 AND CAST(S_NUM AS INTEGER) > 0
    </select>
    
    <sql id="searchExcel">

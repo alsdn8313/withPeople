@@ -128,7 +128,11 @@ public class BoardController {
 		cell=row.createCell(1);
 		cell.setCellValue("상품명");
 		cell=row.createCell(2);
-		cell.setCellValue("가격");
+		cell.setCellValue("기존가격");
+		cell=row.createCell(3);
+		cell.setCellValue("판매처");
+		cell=row.createCell(4);
+		cell.setCellValue("최저가격");
 		
 		for(int i=0; i < freeBoardList.size() ; i++  ) {
 			row=sheet.createRow(i+1);  // '열 이름 표기'로 0번째 행 만들었으니까 1번째행부터
@@ -138,12 +142,16 @@ public class BoardController {
 			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_item());
 			cell=row.createCell(cellCount++);
+			cell.setCellValue(freeBoardList.get(i).getS_price());
+			cell=row.createCell(cellCount++);
+			cell.setCellValue(freeBoardList.get(i).getS_mall_nm());
+			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_lprice());
 			
 		}
 		
 		//sheet.setColumnWidth(1, 3400);
-		for (int i=0; i<3; i++){
+		for (int i=0; i<4; i++){
 			sheet.autoSizeColumn(i);
 			sheet.setColumnWidth(i, (sheet.getColumnWidth(i))+(short)1024);
 		}	
@@ -155,7 +163,7 @@ public class BoardController {
 		wb.write(response.getOutputStream());
 	}
 
-	// 게시판 글 작성
+	
 	@RequestMapping(value = "/board/insertItem", method = RequestMethod.GET)
 	@ResponseBody
 	public void writeItem(BoardVO boardVO) throws Exception{

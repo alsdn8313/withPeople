@@ -54,12 +54,16 @@
 			<section>
 				<form role="form" method="get" name="frm">
 					<table class="table table-hover">
-						<tr><th>번호</th><th>제품명</th><th>가격</th></tr>
+						<tr><th>번호</th><th>제품명</th><!--<th>제조사</th><th>브랜드</th>--><th>기존가격</th><th>판매처</th><th>최저가격</th></tr>
 						<c:forEach items="${list}" var="list">
 						<tr>
-							<td><input name="s_num" 		value="${list.s_num}"  		style="width: 30px;" readonly="readonly" class='chk'/></td>
+							<td><input name="s_num" 		value="${list.s_num}"  		style="width: 40px;" readonly="readonly" class='chk'/></td>
 							<td><input name="s_item" 		value="${list.s_item}"  	style="width: 500px;" readonly="readonly"/></td>
-							<td><input name="s_lprice" 		value="${list.s_lprice}" 	style="width: 60px;" readonly="readonly"/></td>
+							<%-- <td><input name="s_maker" 		value="${list.s_maker}"  	style="width: 100px;" readonly="readonly"/></td>
+							<td><input name="s_brand" 		value="${list.s_brand}"  	style="width: 100px;" readonly="readonly"/></td> --%>
+							<td><input name="s_brand" 		value="${list.s_price}"  	style="width: 100px;" readonly="readonly"/></td>
+							<td><input name="s_mall_nm" 	value="${list.s_mall_nm}"  	style="width: 200px;" readonly="readonly"/></td>
+							<td><input name="s_lprice" 		value="${list.s_lprice}" 	style="width: 100px;" readonly="readonly"/></td>
 						</tr>
 						</c:forEach>
 				</table>
@@ -84,7 +88,7 @@
 				    <script>
 				      $(function(){
 				        $('#searchBtn').click(function() {
-				          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val());
+				          self.location = "listExcel" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val());
 				        });
 				      });   
 				    </script>
@@ -93,16 +97,16 @@
 				<div class="col-md-offset-3">
 				  <ul class="pagination">
 				    <c:if test="${pageMaker.prev}">
-				    	<li><a href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
+				    	<li><a href="listExcel${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
 				    </c:if> 
 				
 				    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
 				    	<li <c:out value="${pageMaker.cri.page == idx ? 'class=info' : '' }"/>>
-				    	<a href="list${pageMaker.makeSearch(idx)}">${idx}</a></li>
+				    	<a href="listExcel${pageMaker.makeSearch(idx)}">${idx}</a></li>
 				    </c:forEach>
 				
 				    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				    	<li><a href="list${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a></li>
+				    	<li><a href="listExcel${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a></li>
 				    </c:if> 
 				  </ul>
 				</div>
