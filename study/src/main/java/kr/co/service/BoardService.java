@@ -10,7 +10,7 @@ public interface BoardService {
 	//게시글 작성
 	public void write(BoardVO boardVO) throws Exception;
 	
-	public List<BoardVO> listAll() throws Exception;
+	public List<BoardVO> listAll(SearchCriteria scri) throws Exception;
 	
 	// 게시물 목록 조회(페이징)
 	public List<BoardVO> list(SearchCriteria scri) throws Exception;
@@ -23,7 +23,7 @@ public interface BoardService {
 	
 	public void delete(BoardVO boardVO) throws Exception;
 	
-	public List<BoardVO> excelList() throws Exception;
+	public List<BoardVO> excelList(SearchCriteria scri) throws Exception;
 	
 	public List<BoardVO> excelListPage(SearchCriteria scri) throws Exception;
 	

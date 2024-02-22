@@ -38,6 +38,7 @@ public class BoardController {
 	@Inject
 	BoardService service;
 	
+	
 	// 게시판 글 작성 화면
 	@RequestMapping(value = "/board/writeView", method = RequestMethod.GET)
 	public void writeView() throws Exception{
@@ -60,7 +61,7 @@ public class BoardController {
 	public String list(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		logger.info("list");
 		
-		model.addAttribute("listAll",service.listAll());
+		model.addAttribute("listAll",service.listAll(scri));
 		model.addAttribute("list",service.list(scri));
 		
 		PageMaker pageMaker = new PageMaker();
@@ -111,7 +112,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/board/excelDown")
-	public void excelDownload(HttpServletResponse response) throws Exception{
+	public void excelDownload(HttpServletResponse response, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		XSSFWorkbook wb=null;
 		Sheet sheet=null;
 		Row row=null;
@@ -119,7 +120,7 @@ public class BoardController {
 		wb = new XSSFWorkbook();
 		sheet = wb.createSheet("mysheet");
 		
-		List<BoardVO> freeBoardList = service.excelList();
+		List<BoardVO> freeBoardList = service.excelList(scri);
 		
 		// row(행) 생성
 		row = sheet.createRow(0); //0번째 행
@@ -128,11 +129,11 @@ public class BoardController {
 		cell=row.createCell(1);
 		cell.setCellValue("상품명");
 		cell=row.createCell(2);
-		cell.setCellValue("기존가격");
-		cell=row.createCell(3);
 		cell.setCellValue("판매처");
-		cell=row.createCell(4);
+		cell=row.createCell(3);
 		cell.setCellValue("최저가격");
+		cell=row.createCell(4);
+		cell.setCellValue("기존가격");
 		
 		for(int i=0; i < freeBoardList.size() ; i++  ) {
 			row=sheet.createRow(i+1);  // '열 이름 표기'로 0번째 행 만들었으니까 1번째행부터
@@ -142,11 +143,11 @@ public class BoardController {
 			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_item());
 			cell=row.createCell(cellCount++);
-			cell.setCellValue(freeBoardList.get(i).getS_price());
-			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_mall_nm());
 			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_lprice());
+			cell=row.createCell(cellCount++);
+			cell.setCellValue(freeBoardList.get(i).getS_price());
 			
 		}
 		
@@ -184,7 +185,7 @@ public class BoardController {
 	public String listExcel(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		logger.info("listExcel");
 		
-		model.addAttribute("listAll",service.excelList());
+		model.addAttribute("listAll",service.excelList(scri));
 		model.addAttribute("list",service.excelListPage(scri));
 		
 		PageMaker pageMaker = new PageMaker();

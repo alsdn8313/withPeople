@@ -21,6 +21,8 @@ public class BoardVO {
 	private String s_price;
 	private String s_mall_nm;
 	
+	private String userId;
+	
 	
 	public int getBno() {
 		return bno;
@@ -111,6 +113,12 @@ public class BoardVO {
 	}
 	public void setS_mall_nm(String s_mall_nm) {
 		this.s_mall_nm = s_mall_nm;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 	

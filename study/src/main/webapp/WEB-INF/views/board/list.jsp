@@ -4,15 +4,13 @@
 <html>
 	<head>
 		<!-- 합쳐지고 최소화된 최신 CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-		<!-- 부가적인 테마 -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 		
 		<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->	
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script><!-- 항상 최신버전의 JQuery를 사용가능하다. -->
 		<title>게시판</title>
 		<style type="text/css">
-			 li {list-style: none;  padding: 6px; float: left;}
+			 /* li {list-style: none;  padding: 6px; float: left;} */
 			 input {border: none;}
 			 
 			 .col-md-offset-3 {margin-left: 650px;}
@@ -30,105 +28,110 @@
 		
 		$(document).ready(function(){
 			$('#Progress_Loading').hide();
+		    var userId = "${member.userId}";
 			
 			$("#btn").on("click", function(){
 				//$("#display_1 td").empty();
-				var maskHeight = $(document).height();
-			    var maskWidth  = window.document.body.clientWidth;         //화면에 출력할 마스크를 설정해줍니다.    
-			    var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-			    
-				$('#Progress_Loading').show();
-				
-				//화면에 레이어 추가
-			    $('body').append(mask)
-				
-			    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.    
-			    $('#mask').css({            
-			    	'width' : maskWidth,            
-			    	'height': maskHeight,            
-			    	'opacity' : '0.3'    
-			    });       
-			    //마스크 표시    
-			    $('#mask').show();
-			    deleteItem();
-				
-				setTimeout(function () {
+				if(document.getElementsByName("s_word").length > 0){
+					var maskHeight = $(document).height();
+				    var maskWidth  = window.document.body.clientWidth;         //화면에 출력할 마스크를 설정해줍니다.    
+				    var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+					$('#Progress_Loading').show();
 					
-					$(".i_tr").empty();
+					//화면에 레이어 추가
+				    $('body').append(mask)
 					
-					var key_word = document.getElementsByName("s_word");
-					var s_price = document.getElementsByName("s_price");
+				    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.    
+				    $('#mask').css({            
+				    	'width' : maskWidth,            
+				    	'height': maskHeight,            
+				    	'opacity' : '0.3'    
+				    });       
+				    //마스크 표시    
+				    $('#mask').show();
+				    deleteItem(userId);
 					
-			 		for(var i = 0; i < key_word.length; i++){
-			 		//for(var i = 0; i < 20; i++){
-			 			var data = "input=" + key_word[i].value;
-			 			var price = s_price[i].value;
-			 			//var data = "input=FANUC A06B-6081-H101";
-			 			//getItem(data);
-			 			
-			 			$.ajax({
-				 	        
-			                url:"/board/search",
-			                type:"get",
-			                dataType: 'json',
-			                async: false,
-				 			data: data,
-			                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			                //contentType: false,
-			                processData: false,
-			            	
-			                success: function(data) {
-			                    //resultHtml(data);
-			                    for(var j = 0; j < data.items.length; j++){
-				                	var items = data.items;
-			                    	
-				                	if(items[j].productType == "4" || items[j].productType == "5" || items[j].productType == "6"){
-			                    	
-					                    var productType = items[j].productType; 
-					                    var v_title = items[j].title;
-					                    var title = v_title.replace(/b|\/|<|>/g,"");
-					                    var lprice = items[j].lprice;
-					                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
-					                    var maker = items[j].maker;
-					                    var brand = items[j].brand;
-					                    var mall_nm = items[j].mallName;
-
-					                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
-					         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
-					         			html += "<td name='s_title' id='s_title' style='width: 800; text-align: left;'>" + title + "</td>";
-					         			html += "<td name='s_lprice' id='s_lprice' style='width: 100; text-align: right;'>" + lprice + "</td>";
-					         			html += "</tr>"; */
-					        	 	
-					        	 		//html += "</table>";
-					        	 		
-					        	 		//$("#display_1").append(html);
-					        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm);
-					        	 		return;
-			                    	}
-			                    }
-			        	 		
-			        	 		
-			                },
-			                
-			                error: function() {
-			                    alert("에러 발생");
-			                }
-			          		
-			                ,complete:function()
-			        		{
-		                	// 로딩바를 해제한다.
-		        			$('#Progress_Loading').hide();  
-		        			$('#mask').hide();
-		        			
-			        		}
-			            });//ajax end
-			            
-					} //for end	
-					
-			 		window.open("/board/listExcel", "_blank", "width=2200, height=1200");
-					
-		 		},0); //settimeout end
-	
+					setTimeout(function () {
+						
+						$(".i_tr").empty();
+						
+						var key_word = document.getElementsByName("s_word");
+						var s_price = document.getElementsByName("s_price");
+						
+				 		for(var i = 0; i < key_word.length; i++){
+				 		//for(var i = 0; i < 20; i++){
+				 			var data = "input=" + key_word[i].value;
+				 			var price = s_price[i].value;
+				 			//var data = "input=FANUC A06B-6081-H101";
+				 			//getItem(data);
+				 			
+				 			
+				 			$.ajax({
+					 	        
+				                url:"/board/search",
+				                type:"get",
+				                dataType: 'json',
+				                async: false,
+					 			data: data,
+				                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				                //contentType: false,
+				                processData: false,
+				            	
+				                success: function(data) {
+				                    //resultHtml(data);
+				                    for(var j = 0; j < data.items.length; j++){
+					                	var items = data.items;
+				                    	
+					                	if(items[j].productType == "4" || items[j].productType == "5" || items[j].productType == "6"){
+				                    	
+						                    var productType = items[j].productType; 
+						                    var v_title = items[j].title;
+						                    var title = v_title.replace(/b|\/|<|>/g,"");
+						                    var lprice = items[j].lprice;
+						                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+						                    var maker = items[j].maker;
+						                    var brand = items[j].brand;
+						                    var mall_nm = items[j].mallName;
+											
+						                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
+						         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
+						         			html += "<td name='s_title' id='s_title' style='width: 800; text-align: left;'>" + title + "</td>";
+						         			html += "<td name='s_lprice' id='s_lprice' style='width: 100; text-align: right;'>" + lprice + "</td>";
+						         			html += "</tr>"; */
+						        	 	
+						        	 		//html += "</table>";
+						        	 		
+						        	 		//$("#display_1").append(html);
+						        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId);
+						        	 		return;
+				                    	}
+				                    }
+				        	 		
+				        	 		
+				                },
+				                
+				                error: function() {
+				                    alert("에러 발생");
+				                }
+				          		
+				                ,complete:function()
+				        		{
+			                	// 로딩바를 해제한다.
+			        			$('#Progress_Loading').hide();  
+			        			$('#mask').hide();
+			        			
+				        		}
+				            });//ajax end
+				            
+						} //for end	
+						
+				 		window.open("/board/listExcel?userId="+userId, "_blank", "width=2200, height=1200");
+						
+			 		},0); //settimeout end
+				}else{
+					alert("조회할 데이터가 없습니다.");
+					return;
+				}
 			}); //onclick end
 			
 			/* $("#excelDown").on("click", function(){
@@ -146,11 +149,11 @@
 			
 		});
 	 	
-		function insertItem(s_num, s_item, s_lprice, s_maker, s_brand, s_price, s_mall_nm) {
+		function insertItem(s_num, s_item, s_lprice, s_maker, s_brand, s_price, s_mall_nm, userId) {
 			
 			s_num = Number(s_num + 1);
 			
-			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice+"&s_maker="+s_maker+"&s_brand="+s_brand+"&s_price="+s_price+"&s_mall_nm="+s_mall_nm;
+			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice+"&s_maker="+s_maker+"&s_brand="+s_brand+"&s_price="+s_price+"&s_mall_nm="+s_mall_nm+"&userId="+userId;
 			
 			$.ajax({
 			    url: "/board/insertItem",
@@ -160,10 +163,10 @@
 			
 		}
 		
-		function deleteItem() {
+		function deleteItem(userId) {
 			
 			$.ajax({
-			    url: "/board/deleteItem",
+			    url: "/board/deleteItem?userId="+userId,
 			    type: "get",
 			});
 			
@@ -178,17 +181,25 @@
 		</div>
 	
 		<div>
-			<header>
-				<h1> 게시판</h1>
-			</header>
-			<hr />
-			<div>
+			<nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
+			<a class="navbar-brand" href="${path}/"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
+			<ul class="navbar-nav">
+				<li class="nav-link"><h1></h1></li>
+				<li class="nav-item">${member.userId} 님이 로그인 중입니다.</li>
+			</ul>
+			</nav>
+			<br/>
+			<%-- <hr />
+			<div class="container">
 				<%@include file="nav.jsp" %>
-			</div>
+			</div>	
+			<br/>	
+			<br/>	
 			<hr />
+			<br/> --%>
 			
-			<div>
-				<button type="button" id="btn" class="btn btn-default">최저가 조회</button> 
+			<div class="container">
+				<button type="button" id="btn" class="btn btn-info">최저가 조회</button> 
 			</div>
 			
 			<c:forEach items="${listAll}" var="list">
@@ -196,7 +207,7 @@
 				<input type="hidden" name="s_word" value="${list.key_word}" />
 			</c:forEach>
 			
-			<section>
+			<section class="container" style="margin-top: 10px;">
 				<form role="form" method="get">
 					<table class="table table-hover">
 						<tr><th>번호</th><th>상품번호</th><th>상품명</th><th>가격_1</th><th>가격_2</th><th>수량</th><th>검색어</th><!-- <th>등록일</th> --></tr>
@@ -231,7 +242,7 @@
 						<div class="input-group">
 					    	<input type="text" name="keyword" id="keywordInput" value="${scri.keyword}" class="form-control"/>
 					    	<span class="input-group-btn">
-					    		<button id="searchBtn" type="button" class="btn btn-default">검색</button>
+					    		<button id="searchBtn" type="button" class="btn btn-secondary">검색</button>
 					    	</span>
 					    </div>
 					</div>
@@ -239,25 +250,25 @@
 				    <script>
 				      $(function(){
 				        $('#searchBtn').click(function() {
-				          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val());
+				          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val()) + "&userId=${member.userId}";
 				        });
 				      });   
 				    </script>
 			  </div>
 				
-				<div class="col-md-offset-3">
-				  <ul class="pagination">
+				<div class="container">
+				  <ul class="pagination justify-content-center" style="margin:20px 0">
 				    <c:if test="${pageMaker.prev}">
-				    	<li><a href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}&userId=${member.userId}">이전</a></li>
 				    </c:if> 
 				
 				    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-				    	<li <c:out value="${pageMaker.cri.page == idx ? 'class=info' : '' }"/>>
-				    	<a href="list${pageMaker.makeSearch(idx)}">${idx}</a></li>
+				    	<li <c:out value="${pageMaker.cri.page == idx ? 'class=info' : '' }"/> class="page-item">
+				    	<a class="page-link" href="list${pageMaker.makeSearch(idx)}&userId=${member.userId}">${idx}</a></li>
 				    </c:forEach>
 				
 				    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				    	<li><a href="list${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a></li>
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.endPage + 1)}&userId=${member.userId}">다음</a></li>
 				    </c:if> 
 				  </ul>
 				</div>

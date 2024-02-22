@@ -24,9 +24,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardVO> listAll() throws Exception {
+	public List<BoardVO> listAll(SearchCriteria scri) throws Exception {
 	
-		return dao.listAll();
+		return dao.listAll(scri);
 	}
 	
 	@Override
@@ -54,9 +54,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardVO> excelList() throws Exception {
+	public List<BoardVO> excelList(SearchCriteria scri) throws Exception {
 	
-		return dao.excelList();
+		return dao.excelList(scri);
 	}
 	
 	@Override

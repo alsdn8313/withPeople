@@ -24,9 +24,9 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> listAll() throws Exception {
+	public List<BoardVO> listAll(SearchCriteria scri) throws Exception {
 		
-		return sqlSession.selectList("boardMapper.list");
+		return sqlSession.selectList("boardMapper.list", scri);
 	}
 	
 	@Override
@@ -54,9 +54,9 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> excelList() throws Exception {
+	public List<BoardVO> excelList(SearchCriteria scri) throws Exception {
 		
-		return sqlSession.selectList("boardMapper.excelList");
+		return sqlSession.selectList("boardMapper.excelList", scri);
 	}
 	
 	@Override

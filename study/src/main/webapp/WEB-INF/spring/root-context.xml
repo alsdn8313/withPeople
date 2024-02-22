@@ -7,14 +7,18 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
-	<!-- 오라클 접속 -->
+	<!-- 오라클 접속 로컬-->
     <!-- <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
         <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
         <property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE"/>
         <property name="username" value="ora"/>
         <property name="password" value="pass"/>
+    </bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
     </bean> -->
-   	
+	   	
    	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/MySQL" />
@@ -28,10 +32,6 @@
         <property name="username" value="root" />
         <property name="password" value="patent$" />
     </bean>
-   
-   	<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-    </bean> -->
    
     <!-- Mybatis 연동 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
