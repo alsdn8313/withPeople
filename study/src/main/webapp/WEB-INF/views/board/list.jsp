@@ -10,7 +10,7 @@
 		<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->	
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- 항상 최신버전의 JQuery를 사용가능하다. -->
 		<title>게시판</title>
-		<style type="text/css">
+		<style>
 		@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 			 input {border: none;}
 			 
@@ -20,7 +20,21 @@
 			th {text-align : center;}
 			td {text-align : center;}
 			
-			#back{    position: absolute;    z-index: 100;    background-color: #000000;    display:none;    left:0;    top:0;} #loadingBar{    position:absolute;    left:50%;    top: 40%;    display:none;    z-index:200;}
+			#back{    
+			 position: absolute;    
+			 z-index: 100;   
+			 background-color: #000000;    
+			 display:none;    
+			 left:0;    
+			 top:0;
+			 } 
+			 
+			 #loadingBar{    
+			 position:absolute;    
+			 left:50%;    
+			 top: 40%;    
+			 display:none;    
+			 z-index:200;}
 
 		</style>
 	</head>
@@ -155,16 +169,18 @@
 		function FunLoadingBarStart() {    
 			var backHeight = $(document).height();               	//뒷 배경의 상하 폭    
 			var backWidth = window.document.body.clientWidth;		//뒷 배경의 좌우 폭     
-			var backGroundCover = "<div id='back'></div>";			//뒷 배경을 감쌀 커버   
-			var loadingBarImage = '';								//가운데 띄워 줄 이미지     
-			loadingBarImage += "<div id='loadingBar'>";    
+			//var backGroundCover = "<div id='back'></div>";			//뒷 배경을 감쌀 커버   
+			//var loadingBarImage = '';								//가운데 띄워 줄 이미지     
+			//loadingBarImage += "<div id='loadingBar'>";    
 			//loadingBarImage += "     <img src='/resources/img/viewLoading_2.gif'/>"; //로딩 바 이미지    
-			loadingBarImage += "     <img src='/resources/img/viewLoading.gif'/>"; //로딩 바 이미지
-			loadingBarImage += "</div>";     
-			$('body').append(backGroundCover).append(loadingBarImage);      
+			//loadingBarImage += "     <img src='/resources/img/viewLoading.gif'/>"; //로딩 바 이미지
+			//loadingBarImage += "</div>";     
+			//$('body').append(backGroundCover).append(loadingBarImage);
+			//$('body').append(backGroundCover);
 			$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });    
 			$('#back').show();     
 			$('#loadingBar').show();
+			
 		}
 		
 		function FunLoadingBarEnd() {    
@@ -201,6 +217,10 @@
 			<br/>	
 			<hr />
 			<br/> --%>
+			<div id="back"></div>
+			<div id="loadingBar">
+			<img src="/resources/img/viewLoading.gif"/>
+			</div>   
 			
 			<div class="container">
 				<button type="button" id="btn" class="btn btn-info">최저가 조회</button> 
