@@ -8,11 +8,12 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script><!-- 항상 최신버전의 JQuery를 사용가능하다. -->
 		<title>게시판</title>
 		<style type="text/css">
-			 li {list-style: none;  padding: 6px; float: left;}
-			 input {border: none;}
+			@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 			 
-			 .col-md-offset-3 {margin-left: 650px;}
+			 * {font-family: "IBM Plex Sans KR", sans-serif;}
 			
+			th {text-align : center;}
+			td {text-align : center;}
 		</style>
 	</head>
 	<script type="text/javascript">
@@ -55,14 +56,28 @@
 					<table class="table table-hover">
 						<tr><th>번호</th><th>제품명</th><!--<th>제조사</th><th>브랜드</th>--><th>판매처</th><th>최저가격</th><th>기존가격</th></tr>
 						<c:forEach items="${list}" var="list">
-						<tr>
+						<%-- <tr>
 							<td><input name="s_num" 		value="${list.s_num}"  		style="width: 40px;" readonly="readonly" class='chk'/></td>
 							<td><input name="s_item" 		value="${list.s_item}"  	style="width: 500px;" readonly="readonly"/></td>
-							<%-- <td><input name="s_maker" 		value="${list.s_maker}"  	style="width: 100px;" readonly="readonly"/></td>
-							<td><input name="s_brand" 		value="${list.s_brand}"  	style="width: 100px;" readonly="readonly"/></td> --%>
+							<td><input name="s_maker" 		value="${list.s_maker}"  	style="width: 100px;" readonly="readonly"/></td>
+							<td><input name="s_brand" 		value="${list.s_brand}"  	style="width: 100px;" readonly="readonly"/></td>
 							<td><input name="s_mall_nm" 	value="${list.s_mall_nm}"  	style="width: 200px;" readonly="readonly"/></td>
 							<td><input name="s_lprice" 		value="${list.s_lprice}" 	style="width: 100px;" readonly="readonly"/></td>
 							<td><input name="s_brand" 		value="${list.s_price}"  	style="width: 100px;" readonly="readonly"/></td>
+						</tr> --%>
+						<colgroup>
+						    <col style="width:5%">
+						    <col style="width:40%">
+						    <col style="width:35%">
+						    <col style="width:10%">
+						    <col style="width:10%">
+						 </colgroup>
+						<tr>
+							<td class='chk'><c:out value="${list.s_num}" /></td>
+							<td><c:out value="${list.s_item}" /></td>
+							<td><c:out value="${list.s_mall_nm}" /></td>
+							<td><c:out value="${list.s_lprice}" /></td>
+							<td><c:out value="${list.s_price}" /></td>
 						</tr>
 						</c:forEach>
 				</table>
@@ -85,7 +100,7 @@
 					</div>
 					
 				    <script>
-				      $(function()
+				      $(function(){
 				        $('#searchBtn').click(function() {
 				          self.location = "listExcel" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val()) + "&userId=${member.userId}";
 				        });

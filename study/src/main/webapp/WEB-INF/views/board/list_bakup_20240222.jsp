@@ -14,26 +14,48 @@
 		@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 			 input {border: none;}
 			 
+			#Progress_Loading
+			{
+			 position: absolute;
+			 left: 45%;
+			 top: 40%;
+			 background: #ffffff;
+			}
 			
 			* {font-family: "IBM Plex Sans KR", sans-serif;}
 			
 			th {text-align : center;}
 			td {text-align : center;}
-			
-			#back{    position: absolute;    z-index: 100;    background-color: #000000;    display:none;    left:0;    top:0;} #loadingBar{    position:absolute;    left:50%;    top: 40%;    display:none;    z-index:200;}
-
 		</style>
 	</head>
 	<script type="text/javascript">
 		
 		$(document).ready(function(){
+			$('#Progress_Loading').hide();
 		    var userId = "${member.userId}";
 		    
 			$("#btn").on("click", function(){
 				//$("#display_1 td").empty();
+				location.reload(true);
 				if(document.getElementsByName("s_word").length > 0){
-					location.reload(true);
-					FunLoadingBarStart();
+					
+					var maskHeight = $(document).height();
+				    var maskWidth  = window.document.body.clientWidth;         //화면에 출력할 마스크를 설정해줍니다.    
+				    var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+					
+				  	//화면에 레이어 추가
+				    $('body').append(mask)
+					
+				    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.    
+				    $('#mask').css({            
+				    	'width' : maskWidth,            
+				    	'height': maskHeight,            
+				    	'opacity' : '0.3'    
+				    });       
+
+				    $('#Progress_Loading').show();
+				    //마스크 표시    
+				    $('#mask').show();
 				    deleteItem(userId);
 					
 					setTimeout(function () {
@@ -104,7 +126,8 @@
 						} //for end	
 						
 						// 로딩바를 해제한다.
-	        			FunLoadingBarEnd();
+	        			$('#Progress_Loading').hide();  
+	        			$('#mask').hide();
 				 		window.open("/board/listExcel?userId="+userId, "_blank", "width=2200, height=1200");
 						
 			 		},0); //settimeout end
@@ -152,31 +175,14 @@
 			
 		}
 		
-		function FunLoadingBarStart() {    
-			var backHeight = $(document).height();               	//뒷 배경의 상하 폭    
-			var backWidth = window.document.body.clientWidth;		//뒷 배경의 좌우 폭     
-			var backGroundCover = "<div id='back'></div>";			//뒷 배경을 감쌀 커버   
-			var loadingBarImage = '';								//가운데 띄워 줄 이미지     
-			loadingBarImage += "<div id='loadingBar'>";    
-			//loadingBarImage += "     <img src='/resources/img/viewLoading_2.gif'/>"; //로딩 바 이미지    
-			loadingBarImage += "     <img src='/resources/img/viewLoading.gif'/>"; //로딩 바 이미지
-			loadingBarImage += "</div>";     
-			$('body').append(backGroundCover).append(loadingBarImage);      
-			$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });    
-			$('#back').show();     
-			$('#loadingBar').show();
-		}
-		
-		function FunLoadingBarEnd() {    
-			$('#back, #loadingBar').hide();    
-			$('#back, #loadingBar').remove();
-		}
-		
-		
 	 	
 	</script>
 	
 	<body>
+		<div id ="Progress_Loading"><!-- 로딩바 -->
+		<img src="/resources/img/viewLoading_2.gif"/>
+		</div>
+	
 		<div>
 			<nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
 			<img src="/resources/img/logo.png" width="50px;" height="50px;"/>

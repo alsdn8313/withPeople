@@ -4,6 +4,12 @@
 
 <html>
 <head>
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+		* {font-family: "IBM Plex Sans KR", sans-serif;
+		   font-weight: 600;
+		}
+	</style>
     <title>Home</title>
 <%@ include file="../views/layout/header.jsp" %>
 <!-- <style type="text/css">

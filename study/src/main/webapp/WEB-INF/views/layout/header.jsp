@@ -6,6 +6,10 @@
 <head>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+* {font-family: "IBM Plex Sans KR", sans-serif;  font-weight: 600;}
+</style>
 <title>로그인페이지</title>
 <script>
     $(document).ready(function(){
@@ -47,10 +51,10 @@
 	            <c:choose>
 	            <c:when test="${member.userId == null}">
 		            <div class="form-group">
-		                <label>아이디</label><input name="userId" id="userId" class="form-control">
+		                <label class="control-label">아이디</label><input name="userId" id="userId" class="form-control">
 		            </div>
 		            <div class="form-group">
-		                <label for="userPass">비밀번호</label>
+		                <label for="userPass" class="control-label">비밀번호</label>
 		                <input type="password" name="userPass" id="userPass" class="form-control">
 		            </div>
 	                    <button type="button" id="btnLogin" class="btn btn-primary">로그인</button>
@@ -65,6 +69,9 @@
 		        <c:if test="${member.userId != null }">
 				    <div class="jumbotron text-center container" >
 			    	<h2 class="navbar-brand" >${member.userName}(${member.userId})님 환영합니다.</h2>
+			   		</div>
+			   		<div class="text-center container" >
+			    	<a class="badge badge-pill badge-success" href="${path}/board/list?userId=${member.userId}" style="font-size: 120%;">네이버쇼핑 최저가 조회</a>
 			   		</div>
 			    </c:if>
 		    	</c:otherwise>

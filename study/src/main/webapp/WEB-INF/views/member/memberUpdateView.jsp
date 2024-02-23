@@ -6,6 +6,10 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	 	
 	 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	 	<style type="text/css">
+			@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+			* {font-family: "IBM Plex Sans KR", sans-serif;  font-weight: 600;}
+		</style>
 		<title>회원가입</title>
 	</head>
 	<script type="text/javascript">
@@ -59,7 +63,7 @@
 				<div class="form-group has-feedback">
 					<button class="btn btn-success" type="submit" id="submit">회원정보수정</button>
 					<button class="cencle btn btn-danger" type="button">취소</button>
-					<button class="btn btn-danger" type="button" style="margin-left: 830;" id="delete">회원탈퇴</button>
+					<button class="btn btn-danger" type="button" style="margin-left: 850;" id="delete">회원탈퇴</button>
 				</div>
 			</form>
 		</section>

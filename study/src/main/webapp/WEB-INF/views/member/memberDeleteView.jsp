@@ -6,6 +6,10 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	 	
 	 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	 	<style type="text/css">
+			@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+			* {font-family: "IBM Plex Sans KR", sans-serif;  font-weight: 600;}
+		</style>
 		<title>회원탈퇴</title>
 	</head>
 	<script type="text/javascript">

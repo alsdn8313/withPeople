@@ -2,6 +2,10 @@
 <!-- jstl 코어 태그 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+		* {font-family: "IBM Plex Sans KR", sans-serif;}
+</style>
 <nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
 	<a class="navbar-brand" href="${path}/board/list?userId=${member.userId}"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
 	<ul class="navbar-nav">

@@ -40,6 +40,7 @@
 	    FROM item.WP_ITEMS
 	    WHERE 1=1
 	     AND USERID = #{userId}
+	     <include refid="search"></include>
 		ORDER BY BNO 
    </select>
    
@@ -148,6 +149,7 @@
 	    FROM item.WP_ITEMS_SRCH
 	    WHERE 1=1
 	    AND USERID = #{userId}
+	    <include refid="searchExcel"></include>
 		ORDER BY CAST(S_NUM AS INTEGER) 
    </select>
    
@@ -184,7 +186,7 @@
 		  FROM item.WP_ITEMS_SRCH
 		 WHERE 1=1 
 		 AND USERID = #{userId}
-		 <include refid="search"></include>
+		 <include refid="searchExcel"></include>
 		 AND CAST(S_NUM AS INTEGER) > 0
    </select>
    

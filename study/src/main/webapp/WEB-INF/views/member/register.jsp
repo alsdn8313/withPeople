@@ -3,12 +3,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 	<head>
-		<!-- 합쳐지고 최소화된 최신 CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-		<!-- 부가적인 테마 -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	 	
 	 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	 	<style type="text/css">
+			@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+			* {font-family: "IBM Plex Sans KR", sans-serif; font-weight: 600;}
+		</style>
 		<title>회원가입</title>
 	</head>
 	<script type="text/javascript">
@@ -76,6 +77,9 @@
 		}
 	</script>
 	<body>
+		<nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
+			<a class="navbar-brand" href="${path}/"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
+		</nav>
 		<section id="container" class="container">
 			<form action="/member/register" method="post" id="regForm">
 				<div class="form-group">
