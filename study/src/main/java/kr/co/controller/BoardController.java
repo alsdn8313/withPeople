@@ -1,13 +1,21 @@
 package kr.co.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +26,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.service.BoardService;
 import kr.co.vo.BoardVO;
@@ -197,4 +208,86 @@ public class BoardController {
 		return "board/searchView";
 		
 	}
+	
+	@RequestMapping(value ="/board/uploadView")
+	public String listApplicant(HttpServletRequest request,ModelMap model, @ModelAttribute("scri") SearchCriteria scri) throws Exception {
+	 
+	    return "board/uploadView";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/board/readExcel", method = RequestMethod.POST)
+	public String readExcel(@RequestParam("file") MultipartFile file, Model model, BoardVO boardvo) throws Exception {
+	 
+		XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+	    XSSFSheet worksheet = workbook.getSheetAt(0);
+	    FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();	
+	    
+	    service.deleteList(boardvo);
+	    
+	    for(int i=1;i<worksheet.getPhysicalNumberOfRows() ;i++) {
+	        BoardVO excel = new BoardVO();
+	           
+	        
+	        DataFormatter formatter = new DataFormatter();		        
+	        XSSFRow row = worksheet.getRow(i);
+	        	    	
+	        String b_no = Integer.toString(i);
+	        String i_no = formatter.formatCellValue(row.getCell(0));
+	        String item_nm = formatter.formatCellValue(row.getCell(1));
+	        String price_one = formatter.formatCellValue(row.getCell(2));
+	        String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
+	        String item_count = formatter.formatCellValue(row.getCell(4));
+	        String key_word = formatter.formatCellValue(row.getCell(5));
+	        
+	        excel.setB_no(b_no);
+	        excel.setI_no(i_no);
+	        excel.setItem_nm(item_nm);
+	        excel.setPrice_one(price_one);
+	        excel.setPrice_two(price_two);
+	        excel.setItem_count(item_count);
+	        excel.setKey_word(key_word);
+	        excel.setUserId(boardvo.getUserId());
+  
+	        service.write(excel);
+	    } 
+	    return "true";
+	}
+	
+
+	/*private String returnStringValue(XSSFWorkbook workbook, Cell cell) { 	    
+		CellType cellType = cell.getCellType(); 	    
+		
+		switch (cellType) {	        
+			case NUMERIC:        		
+				double doubleVal = cell.getNumericCellValue();                                
+				
+				if (DateUtil.isValidExcelDate(doubleVal)) {                	        			
+					SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");        			
+					return String.valueOf(dateFormatter.format(cell.getDateCellValue()));        			        		
+				} else {        			        			
+					return String.valueOf(doubleVal);        			        		
+				
+				}	            	        
+			case STRING:	            
+				return cell.getStringCellValue();	            	        
+			
+			case ERROR:	            
+				return String.valueOf(cell.getErrorCellValue());	            	        
+			case BLANK:	            
+				return "";	            	        
+			case FORMULA:				
+				FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();				
+				DataFormatter dataFormatter = new DataFormatter();				
+				// System.out.println(cell.getCellFormula()); // 수식 그대로				
+				return dataFormatter.formatCellValue(evaluator.evaluateInCell(cell)); // 수식 결과	        		        
+			case BOOLEAN:	            
+				return String.valueOf(cell.getBooleanCellValue());	            	        
+			default:	            
+				return "";
+		}
+	}*/
+	
+		
+
 }

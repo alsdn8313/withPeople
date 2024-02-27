@@ -48,6 +48,7 @@
 				if(document.getElementsByName("s_word").length > 0){
 					location.reload(true);
 					FunLoadingBarStart();
+					stopClick();
 				    deleteItem(userId);
 					
 					setTimeout(function () {
@@ -120,6 +121,7 @@
 						// 로딩바를 해제한다.
 	        			FunLoadingBarEnd();
 				 		window.open("/board/listExcel?userId="+userId, "_blank", "width=2200, height=1200");
+	        			startClick();
 						
 			 		},0); //settimeout end
 				}else{
@@ -188,8 +190,31 @@
 			$('#back, #loadingBar').remove();
 		}
 		
+		function stopClick() {
+			var stopFunc = function(e) { e.preventDefault(); e.stopPropagation(); return false; };
+			var all = document.querySelectorAll('*');
+			for (var i = 0; i < all.length; i++) {
+				var el = all[i];
+				if (el.addEventListener) {
+					el.addEventListener('click', stopFunc, true);
+				}
+			}
+		}
 		
+		function startClick() {
+			var all = document.querySelectorAll('*');
+			for (var i = 0; i < all.length; i++) {
+				var el = all[i];
+				if (el.removeEventListener) {
+					el.removeEventListener('click', stopFunc, true);
+				}
+			}
+		}
 	 	
+		function uploadView() {
+			window.open("/board/uploadView?userId=${member.userId}", "_blank", "width=1000, height=500");
+		}
+		
 	</script>
 	
 	<body>
@@ -223,7 +248,9 @@
 			</div>   
 			
 			<div class="container">
-				<button type="button" id="btn" class="btn btn-info">최저가 조회</button> 
+          		<input type="button" id="uploadView" value="엑셀파일 업로드" onclick="uploadView();" class="btn btn-info" />
+				<button type="button" id="btn" class="btn btn-info">최저가 조회</button>
+            	<!-- <a href="${path}/document/applicant_excelUpload_form.xlsx" class="btn btn btn-primary btn-lg">양식파일 다운로드</a> -->
 			</div>
 			
 			<c:forEach items="${listAll}" var="list">
@@ -257,7 +284,7 @@
 						    <col style="width:30%">
 						 </colgroup>
 						<tr>
-							<td><c:out value="${list.bno}" /></td>
+							<td><c:out value="${list.b_no}" /></td>
 							<td><c:out value="${list.i_no}" /></td>
 							<td><c:out value="${list.item_nm}" /></td>
 							<td><c:out value="${list.price_one}" /></td>

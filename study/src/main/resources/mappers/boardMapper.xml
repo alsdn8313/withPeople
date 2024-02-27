@@ -5,9 +5,10 @@
 <mapper namespace="boardMapper">
    
    <!-- 게시판 글 작성 -->
-   <insert id="insert">
+   <insert id="insert" parameterType="kr.co.vo.BoardVO">
 	   INSERT INTO item.WP_ITEMS( 
-	   					       I_NO 
+	   						  	B_NO
+	   					      , I_NO 
 	   					      , ITEM_NM 
 	   					      , PRICE_ONE
 	   					      , PRICE_TWO  
@@ -16,7 +17,8 @@
 	   					      , USERID
 	   					      )
 	                 VALUES(   
-	                 		    #{i_no}
+	                 		   #{b_no}
+	                 		  , #{i_no}
 	                 		  , #{item_nm}
 	                 		  , #{price_one} 
 	                 		  , #{price_two}
@@ -29,7 +31,7 @@
    
    <!-- 게시판 글 조회(전체) -->
    <select id="list" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
-  	    SELECT   BNO
+  	    SELECT   B_NO
 		   , I_NO
 		   , ITEM_NM
 		   , PRICE_ONE
@@ -41,14 +43,14 @@
 	    WHERE 1=1
 	     AND USERID = #{userId}
 	     <include refid="search"></include>
-		ORDER BY BNO 
+		ORDER BY CAST(B_NO AS INTEGER) 
    </select>
    
    
    <!-- 게시판 글 조회(페이징) -->
    <select id="listPage" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
    	    SELECT 
-   	    	 BNO
+   	    	 B_NO
 		   , I_NO
 		   , ITEM_NM
 		   , PRICE_ONE
@@ -56,30 +58,30 @@
 		   , ITEM_COUNT
 		   , KEY_WORD
 		FROM(   
-	   	    SELECT   BNO
+	   	    SELECT   B_NO
 				   , I_NO
 				   , ITEM_NM
 				   , PRICE_ONE
 				   , PRICE_TWO
 				   , ITEM_COUNT
 				   , KEY_WORD
-				   , ROW_NUMBER() OVER(ORDER BY BNO) AS RNUM
+				   , ROW_NUMBER() OVER(ORDER BY CAST(B_NO AS INTEGER)) AS RNUM
 			  FROM item.WP_ITEMS
 			  WHERE 1=1
 			  AND USERID = #{userId}
 			  <include refid="search"></include>
 			 ) MP
 		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}	 
-		ORDER BY BNO 
+		ORDER BY CAST(B_NO AS INTEGER) 
    </select>
    
    <select id="listCount" resultType="int" parameterType="kr.co.vo.Criteria">
-		SELECT COUNT(BNO)
+		SELECT COUNT(B_NO)
 		  FROM item.WP_ITEMS
 		 WHERE 1=1 
 		  AND USERID = #{userId}
 		 <include refid="search"></include>
-		 AND BNO > 0
+		 AND B_NO > 0
    </select>
    
    <sql id="search">
@@ -90,6 +92,13 @@
 			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if> -->
 		</if>
 	</sql>
+   
+   <delete id="deleteList" parameterType="kr.co.vo.BoardVO">
+		DELETE 
+		  FROM item.WP_ITEMS
+		 WHERE USERID = #{userId}
+	</delete>
+   
    
    <insert id="insertItem">
 	   INSERT INTO item.WP_ITEMS_SRCH( S_NUM  

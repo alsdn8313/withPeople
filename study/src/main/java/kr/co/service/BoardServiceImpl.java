@@ -70,4 +70,10 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return dao.excelListCount(scri);
 	}
+	
+	@Override
+	public void deleteList(BoardVO boardVO) throws Exception {
+		
+		dao.deleteList(boardVO);
+	}
 }

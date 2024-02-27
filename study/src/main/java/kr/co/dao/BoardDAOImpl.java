@@ -70,4 +70,10 @@ public class BoardDAOImpl implements BoardDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("boardMapper.excelListCount", scri);
 	}
+	
+	@Override
+	public void deleteList(BoardVO boardVO) throws Exception {
+		
+		sqlSession.delete("boardMapper.deleteList", boardVO);
+	}
 }

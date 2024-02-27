@@ -28,4 +28,6 @@ public interface BoardDAO {
 	public List<BoardVO> excelListPage(SearchCriteria scri) throws Exception;
 	
 	public int excelListCount(SearchCriteria scri) throws Exception;
+	
+	public void deleteList(BoardVO boardVO) throws Exception;
 }

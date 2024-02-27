@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class BoardVO {
 
-	private int bno;
+	private String b_no;
 	private String i_no;
 	private String item_nm;
 	private String price_one;
@@ -24,11 +24,11 @@ public class BoardVO {
 	private String userId;
 	
 	
-	public int getBno() {
-		return bno;
+	public String getB_no() {
+		return b_no;
 	}
-	public void setBno(int bno) {
-		this.bno = bno;
+	public void setB_no(String b_no) {
+		this.b_no = b_no;
 	}
 	public String getI_no() {
 		return i_no;
