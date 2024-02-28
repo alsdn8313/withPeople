@@ -1,6 +1,5 @@
 package kr.co.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,9 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,6 +21,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -71,17 +71,24 @@ public class BoardController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		logger.info("list");
-		
-		model.addAttribute("listAll",service.listAll(scri));
-		model.addAttribute("list",service.list(scri));
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(scri);
-		pageMaker.setTotalCount(service.listCount(scri));
-		
-		model.addAttribute("pageMaker", pageMaker);
-		
-		return "board/list";
+		logger.info("!!!!!!!!!!!!!!!!!!!!! : " + scri.getUserId());
+
+		if(!"".equals(scri.getUserId()) && scri.getUserId() != null){
+			
+			model.addAttribute("list",service.list(scri));
+			model.addAttribute("listAll",service.listAll(scri));
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(scri);
+			pageMaker.setTotalCount(service.listCount(scri));
+			
+			model.addAttribute("pageMaker", pageMaker);
+			
+			return "board/list";
+		}else{
+			return "redirect:/";
+		}
+			
 		
 	}
 	
@@ -254,7 +261,6 @@ public class BoardController {
 	    return "true";
 	}
 	
-
 	/*private String returnStringValue(XSSFWorkbook workbook, Cell cell) { 	    
 		CellType cellType = cell.getCellType(); 	    
 		

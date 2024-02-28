@@ -67,7 +67,7 @@ function _onSubmit(){
                         </colgroup>
                         <tbody>
                             <tr>
-                                <th class="active" style="text-align:right"><label class="control-label" for="">파일 업로드</label></th>
+                                <th class="active" style="text-align:center"><label class="control-label" for="">파일 업로드</label></th>
                                 <td>
                                     <input type="file" name="file" id="file" accept=".xlsx, .xls"/>
                                 </td>
@@ -79,8 +79,8 @@ function _onSubmit(){
         </div>
         
         <div class="pull-right">
-            <input type="submit" value="엑셀파일 업로드" class="btn btn btn-primary btn-lg" onclick="_onSubmit()"/>
-            <a href="${path}/resources/file/sample.xlsx" class="btn btn btn-primary btn-lg">양식파일 다운로드</a>
+            <input type="submit" value="엑셀파일 업로드" class="btn btn btn-primary" onclick="_onSubmit()"/>
+            <a href="${path}/resources/file/sample.xlsx" class="btn btn btn-primary">양식파일 다운로드</a>
         </div>
     </form>
 </div>

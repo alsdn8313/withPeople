@@ -7,7 +7,7 @@
 		* {font-family: "IBM Plex Sans KR", sans-serif;}
 </style>
 <nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
-	<a class="navbar-brand" href="${path}/board/list?userId=${member.userId}"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
+	<a class="navbar-brand" href="${path}/"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
 	<ul class="navbar-nav">
 		<c:choose>
 		    <c:when test="${member.userId == null}">

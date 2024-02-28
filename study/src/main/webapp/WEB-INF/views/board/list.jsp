@@ -212,7 +212,7 @@
 		}
 	 	
 		function uploadView() {
-			window.open("/board/uploadView?userId=${member.userId}", "_blank", "width=1000, height=500");
+			window.open("/board/uploadView?userId=${member.userId}", "_blank", "width=700, height=300");
 		}
 		
 	</script>
