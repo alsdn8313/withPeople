@@ -22,6 +22,7 @@ public class BoardVO {
 	private String s_mall_nm;
 	
 	private String userId;
+	private String gubun;
 	
 	
 	public String getB_no() {
@@ -119,6 +120,12 @@ public class BoardVO {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getGubun() {
+		return gubun;
+	}
+	public void setGubun(String gubun) {
+		this.gubun = gubun;
 	}
 	
 	

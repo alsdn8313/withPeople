@@ -20,7 +20,7 @@
     
     <!-- 로그인 -->
 	<select id="login" resultType="kr.co.vo.MemberVO">
-		SELECT USERID, USERPASS, USERNAME 
+		SELECT USERID, USERPASS, USERNAME, USERCOMN, GUBUN 
 		  FROM item.WP_MEMBER
 		 WHERE USERID = #{userId}
 		   AND USERPASS = #{userPass}   

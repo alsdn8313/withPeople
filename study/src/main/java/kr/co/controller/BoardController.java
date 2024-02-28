@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -21,9 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -69,11 +67,10 @@ public class BoardController {
 	
 	// 게시판 목록 조회
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
+	public String list(Model model, @ModelAttribute("scri") SearchCriteria scri, HttpSession session, HttpServletRequest request) throws Exception{
 		logger.info("list");
-		logger.info("!!!!!!!!!!!!!!!!!!!!! : " + scri.getUserId());
-
-		if(!"".equals(scri.getUserId()) && scri.getUserId() != null){
+		
+		if(session.getAttribute("member") != null && "Y".equals(scri.getGubun())){
 			
 			model.addAttribute("list",service.list(scri));
 			model.addAttribute("listAll",service.listAll(scri));
@@ -86,7 +83,9 @@ public class BoardController {
 			
 			return "board/list";
 		}else{
-			return "redirect:/";
+			request.setAttribute("msg", "조회 권한이 없습니다.");
+			request.setAttribute("url", "/");
+			return "../views/layout/alert";
 		}
 			
 		

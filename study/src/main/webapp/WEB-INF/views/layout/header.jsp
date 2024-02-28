@@ -71,7 +71,7 @@
 			    	<h2 class="navbar-brand" >${member.userName}(${member.userId})님 환영합니다.</h2>
 			   		</div>
 			   		<div class="text-center container" >
-			    	<a class="badge badge-pill badge-success" href="${path}/board/list?userId=${member.userId}" style="font-size: 120%;">네이버쇼핑 최저가 조회</a>
+			    	<a class="badge badge-pill badge-success" href="${path}/board/list?userId=${member.userId}&gubun=${member.gubun}" style="font-size: 120%;">네이버쇼핑 최저가 조회</a>
 			   		</div>
 			    </c:if>
 		    	</c:otherwise>

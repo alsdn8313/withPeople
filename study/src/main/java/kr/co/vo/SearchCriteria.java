@@ -4,8 +4,15 @@ public class SearchCriteria extends Criteria{
 	
 	private String searchType = "";
 	private String keyword = "";
-	private String userId; 
+	private String userId;
+	private String gubun; 
 	
+	public String getGubun() {
+		return gubun;
+	}
+	public void setGubun(String gubun) {
+		this.gubun = gubun;
+	}
 	public String getUserId() {
 		return userId;
 	}
