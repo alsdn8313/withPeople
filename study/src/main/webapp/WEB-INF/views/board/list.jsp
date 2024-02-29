@@ -11,7 +11,7 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script> <!-- 항상 최신버전의 JQuery를 사용가능하다. -->
 		<title>게시판</title>
 		<style>
-		@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 			 input {border: none;}
 			 
 			
@@ -20,21 +20,26 @@
 			th {text-align : center;}
 			td {text-align : center;}
 			
-			#back{    
-			 position: absolute;    
-			 z-index: 100;   
-			 background-color: #000000;    
-			 display:none;    
-			 left:0;    
-			 top:0;
-			 } 
-			 
-			 #loadingBar{    
-			 position:absolute;    
-			 left:50%;    
-			 top: 40%;    
-			 display:none;    
-			 z-index:200;}
+			#loading {
+			    width: 100%;
+			    height: 100%;
+			    top: 0;
+			    left: 0;
+			    position: fixed;
+			    display: block;
+			    background: #ededed;
+			    opacity: 0.7;
+			    z-index: 99;
+			    text-align: center;
+			}
+			#loading > #loading_bar {
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    z-index: 100;
+			    transform : translate(-50%, -50%);
+			}
+			
 
 		</style>
 	</head>
@@ -45,15 +50,19 @@
 		    
 			$("#btn").on("click", function(){
 				//$("#display_1 td").empty();
-				if(document.getElementsByName("s_word").length > 0){
-					location.reload(true);
-					FunLoadingBarStart();
+				if(confirm("조회 하시겠습니까?")){
+					$("#loading").show();
 					stopClick();
+				}
+				
+				if(document.getElementsByName("s_word").length > 0){
+					//location.reload(true);
+					//stopClick();
 				    deleteItem(userId);
-					
+				    
 					setTimeout(function () {
 						
-						$(".i_tr").empty();
+						//$(".i_tr").empty();
 						
 						var key_word = document.getElementsByName("s_word");
 						var s_price = document.getElementsByName("s_price");
@@ -74,7 +83,7 @@
 				                async: false,
 					 			data: data,
 				                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				                //contentType: false,
+				                contentType: false,
 				                processData: false,
 				            	
 				                success: function(data) {
@@ -118,16 +127,17 @@
 				            
 						} //for end	
 						
-						// 로딩바를 해제한다.
-	        			FunLoadingBarEnd();
+						$('#loading').hide();
+						location.reload();
 				 		window.open("/board/listExcel?userId="+userId, "_blank", "width=2200, height=1200");
-	        			startClick();
+						//startClick();
 						
 			 		},0); //settimeout end
 				}else{
 					alert("조회할 데이터가 없습니다.");
 					return;
 				}
+
 			}); //onclick end
 			
 			/* $("#excelDown").on("click", function(){
@@ -168,27 +178,7 @@
 			
 		}
 		
-		function FunLoadingBarStart() {    
-			var backHeight = $(document).height();               	//뒷 배경의 상하 폭    
-			var backWidth = window.document.body.clientWidth;		//뒷 배경의 좌우 폭     
-			//var backGroundCover = "<div id='back'></div>";			//뒷 배경을 감쌀 커버   
-			//var loadingBarImage = '';								//가운데 띄워 줄 이미지     
-			//loadingBarImage += "<div id='loadingBar'>";    
-			//loadingBarImage += "     <img src='/resources/img/viewLoading_2.gif'/>"; //로딩 바 이미지    
-			//loadingBarImage += "     <img src='/resources/img/viewLoading.gif'/>"; //로딩 바 이미지
-			//loadingBarImage += "</div>";     
-			//$('body').append(backGroundCover).append(loadingBarImage);
-			//$('body').append(backGroundCover);
-			$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });    
-			$('#back').show();     
-			$('#loadingBar').show();
-			
-		}
 		
-		function FunLoadingBarEnd() {    
-			$('#back, #loadingBar').hide();    
-			$('#back, #loadingBar').remove();
-		}
 		
 		function stopClick() {
 			var stopFunc = function(e) { e.preventDefault(); e.stopPropagation(); return false; };
@@ -201,15 +191,14 @@
 			}
 		}
 		
-		function startClick() {
+		/* function startClick() {
+			//var stopFunc = function(e) { e.preventDefault(); e.stopPropagation(); return false; };
 			var all = document.querySelectorAll('*');
 			for (var i = 0; i < all.length; i++) {
 				var el = all[i];
-				if (el.removeEventListener) {
-					el.removeEventListener('click', stopFunc, true);
-				}
+				el.removeEventListener('click', stopClick, true);
 			}
-		}
+		} */
 	 	
 		function uploadView() {
 			window.open("/board/uploadView?userId=${member.userId}", "_blank", "width=700, height=300");
@@ -218,6 +207,13 @@
 	</script>
 	
 	<body>
+		<div id="loading" style="display: none; ">
+		    <div id="loading_bar">
+		        <!-- 로딩바의 경로를 img 태그안에 지정해준다. -->
+		        <img src="/resources/img/viewLoading.gif">
+		        <p style="font-size: x-large; font-weight: bold;">로딩 중 입니다 ...</p>
+		    </div>
+		</div>
 		<div>
 			<nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
 			<img src="/resources/img/logo.png" width="50px;" height="50px;"/>
@@ -242,10 +238,6 @@
 			<br/>	
 			<hr />
 			<br/> --%>
-			<div id="back"></div>
-			<div id="loadingBar">
-			<img src="/resources/img/viewLoading.gif"/>
-			</div>   
 			
 			<div class="container">
           		<input type="button" id="uploadView" value="엑셀파일 업로드" onclick="uploadView();" class="btn btn-info" />
@@ -319,7 +311,7 @@
 				    <script>
 				      $(function(){
 				        $('#searchBtn').click(function() {
-				          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val()) + "&userId=${member.userId}";
+				          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val()) + "&userId=${member.userId}&gubun=${member.gubun}";
 				        });
 				      });   
 				    </script>
@@ -328,16 +320,16 @@
 				<div class="container">
 				  <ul class="pagination justify-content-center" style="margin:20px 0">
 				    <c:if test="${pageMaker.prev}">
-				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}&userId=${member.userId}">이전</a></li>
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}&userId=${member.userId}&gubun=${member.gubun}">이전</a></li>
 				    </c:if> 
 				
 				    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
 				    	<li <c:out value="${pageMaker.cri.page == idx ? 'class=info' : '' }"/> class="page-item">
-				    	<a class="page-link" href="list${pageMaker.makeSearch(idx)}&userId=${member.userId}">${idx}</a></li>
+				    	<a class="page-link" href="list${pageMaker.makeSearch(idx)}&userId=${member.userId}&gubun=${member.gubun}">${idx}</a></li>
 				    </c:forEach>
 				
 				    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.endPage + 1)}&userId=${member.userId}">다음</a></li>
+				    	<li class="page-item"><a class="page-link" href="list${pageMaker.makeSearch(pageMaker.endPage + 1)}&userId=${member.userId}&gubun=${member.gubun}">다음</a></li>
 				    </c:if> 
 				  </ul>
 				</div>

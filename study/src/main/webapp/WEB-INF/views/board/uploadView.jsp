@@ -15,11 +15,34 @@
 			 
 			
 			* {font-family: "IBM Plex Sans KR", sans-serif;}
+			
+			#loading {
+			    width: 100%;
+			    height: 100%;
+			    top: 0;
+			    left: 0;
+			    position: fixed;
+			    display: block;
+			    background: #ededed;
+			    opacity: 0.7;
+			    z-index: 99;
+			    text-align: center;
+			}
+			#loading > #loading_bar {
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    z-index: 100;
+			    transform : translate(-50%, -50%);
+			}
 		</style>
 	</head> 
 <script>
 	
 function _onSubmit(){
+	
+	$("#loading").show();
+	stopClick();
 	
 	if($("#file").val() == ""){
         alert("파일을 업로드해주세요.");
@@ -29,7 +52,7 @@ function _onSubmit(){
 	
 	var form = $('#inputForm')[0];
 	var data = new FormData(form);
-	
+	setTimeout(function () {
 	    $.ajax({
 	        enctype: 'multipart/form-data',
 	        type: 'POST',
@@ -39,6 +62,9 @@ function _onSubmit(){
 	        cache: false,
 	        async: false,
 	        data: data,
+	        /* beforeSend: function()  {
+	        	
+	        }, */
 	        success: function(data) {
 	        },
 	        error: function(e) {
@@ -50,8 +76,28 @@ function _onSubmit(){
 	        	window.close();
 	        }    
 	    });
+	},0); //settimeout end    
 }
+
+function stopClick() {
+	var stopFunc = function(e) { e.preventDefault(); e.stopPropagation(); return false; };
+	var all = document.querySelectorAll('*');
+	for (var i = 0; i < all.length; i++) {
+		var el = all[i];
+		if (el.addEventListener) {
+			el.addEventListener('click', stopFunc, true);
+		}
+	}
+}
+
 </script>
+<div id="loading" style="display: none; ">
+    <div id="loading_bar">
+        <!-- 로딩바의 경로를 img 태그안에 지정해준다. -->
+        <img src="/resources/img/viewLoading.gif">
+        <p style="font-size: x-large; font-weight: bold;">업로드 중 입니다 ...</p>
+    </div>
+</div>
  
 <div id="container">
     <form id="inputForm" method="post"  <%-- action="${path}/board/readExcel?userId=${member.userId}"--%>    enctype="multipart/form-data" class="form-horizontal">

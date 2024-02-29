@@ -241,7 +241,7 @@ public class BoardController {
 	        String b_no = Integer.toString(i);
 	        String i_no = formatter.formatCellValue(row.getCell(0));
 	        String item_nm = formatter.formatCellValue(row.getCell(1));
-	        String price_one = formatter.formatCellValue(row.getCell(2));
+	        String price_one = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(2)));
 	        String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
 	        String item_count = formatter.formatCellValue(row.getCell(4));
 	        String key_word = formatter.formatCellValue(row.getCell(5));
@@ -293,6 +293,11 @@ public class BoardController {
 		}
 	}*/
 	
+	// 게시판 글 작성 화면
+	@RequestMapping(value = "/board/test", method = RequestMethod.GET)
+	public String test() throws Exception{
+		return "board/test";
 		
+	}
 
 }
