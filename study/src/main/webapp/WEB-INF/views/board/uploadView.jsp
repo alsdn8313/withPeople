@@ -41,14 +41,16 @@
 	
 function _onSubmit(){
 	
-	$("#loading").show();
-	stopClick();
-	
 	if($("#file").val() == ""){
         alert("파일을 업로드해주세요.");
         $("#file").focus();
         return false;
     }
+	
+	if(confirm("업로드 하시겠습니까?")){
+		$("#loading").show();
+		stopClick();
+	}
 	
 	var form = $('#inputForm')[0];
 	var data = new FormData(form);

@@ -71,6 +71,7 @@
 				 		//for(var i = 0; i < 20; i++){
 				 			var data = "input=" + key_word[i].value;
 				 			var price = s_price[i].value;
+				 			price = price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 				 			//var data = "input=FANUC A06B-6081-H101";
 				 			//getItem(data);
 				 			
@@ -211,7 +212,7 @@
 		    <div id="loading_bar">
 		        <!-- 로딩바의 경로를 img 태그안에 지정해준다. -->
 		        <img src="/resources/img/viewLoading.gif">
-		        <p style="font-size: x-large; font-weight: bold;">로딩 중 입니다 ...</p>
+		        <p style="font-size: x-large; font-weight: bold;">조회 중 입니다 ...</p>
 		    </div>
 		</div>
 		<div>
@@ -243,6 +244,7 @@
           		<input type="button" id="uploadView" value="엑셀파일 업로드" onclick="uploadView();" class="btn btn-info" />
 				<button type="button" id="btn" class="btn btn-info">최저가 조회</button>
             	<!-- <a href="${path}/document/applicant_excelUpload_form.xlsx" class="btn btn btn-primary btn-lg">양식파일 다운로드</a> -->
+				<input type="text" id="uploadView" style="margin-left: 900" value="${pageMaker.totalCount} 건" />
 			</div>
 			
 			<c:forEach items="${listAll}" var="list">
