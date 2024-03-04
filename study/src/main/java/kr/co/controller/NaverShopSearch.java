@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 
 public class NaverShopSearch {
 
-	public String search() {
+	public String search() throws Exception {
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Naver-Client-Id", "q2rgNFqo261t37lqiYrf");
@@ -20,10 +20,10 @@ public class NaverShopSearch {
         StringBuilder sb = new StringBuilder();
         String body = sb.toString();
 
-        String item = "A06B-6081-H101";
+        String item = "JENIX DSC700";
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
-        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclue=rental:cbshop&sort=asc&display=50", HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=used&sort=asc&display=1", HttpMethod.GET, requestEntity, String.class);
         HttpStatus httpStatus = responseEntity.getStatusCode();
         int status = httpStatus.value();
         
@@ -38,7 +38,7 @@ public class NaverShopSearch {
         return response;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         NaverShopSearch naverShopSearch = new NaverShopSearch();
         naverShopSearch.search();
     }

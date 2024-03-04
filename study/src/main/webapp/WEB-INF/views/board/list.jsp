@@ -65,16 +65,16 @@
 						//$(".i_tr").empty();
 						
 						var key_word = document.getElementsByName("s_word");
+						//var key_word = document.getElementsByName("s_item");
 						var s_price = document.getElementsByName("s_price");
 						
-				 		for(var i = 0; i < key_word.length; i++){
-				 		//for(var i = 0; i < 20; i++){
-				 			var data = "input=" + key_word[i].value;
+				 		//for(var i = 0; i < key_word.length; i++){
+				 		for(var i = 0; i < 1; i++){
+				 			//var data = "input=" + key_word[i].value;
+				 			var data = "input=JENIX DSC700";
 				 			var price = s_price[i].value;
 				 			price = price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
-				 			//var data = "input=FANUC A06B-6081-H101";
 				 			//getItem(data);
-				 			
 				 			
 				 			$.ajax({
 					 	        
@@ -249,6 +249,7 @@
 			
 			<c:forEach items="${listAll}" var="list">
 				<input type="hidden" name="s_price" value="${list.price_two}" />
+				<input type="hidden" name="s_item" value="${list.item_nm}" />
 				<input type="hidden" name="s_word" value="${list.key_word}" />
 			</c:forEach>
 			
