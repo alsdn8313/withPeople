@@ -68,12 +68,18 @@ function _onSubmit(){
 	        	
 	        }, */
 	        success: function(data) {
+	        	/* if(data == "true"){
+	        		$("#loading").hide();
+	        		opener.location.reload();
+		        	window.close();
+	        	} */
 	        },
-	        error: function(e) {
+	         error: function(e) {
 	            console.log(e);
 	            alert('파일업로드 실패');
 	        },
 	        complete : function() {
+	        	$("#loading").hide();
 	        	opener.location.reload();
 	        	window.close();
 	        }    

@@ -39,7 +39,7 @@ public class EbayTest {
         return response;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         NaverShopSearch naverShopSearch = new NaverShopSearch();
         naverShopSearch.search();
     }

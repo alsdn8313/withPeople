@@ -68,10 +68,10 @@
 						//var key_word = document.getElementsByName("s_item");
 						var s_price = document.getElementsByName("s_price");
 						
-				 		//for(var i = 0; i < key_word.length; i++){
-				 		for(var i = 0; i < 1; i++){
-				 			//var data = "input=" + key_word[i].value;
-				 			var data = "input=JENIX DSC700";
+				 		for(var i = 0; i < key_word.length; i++){
+				 		//for(var i = 0; i < 1; i++){
+				 			var data = "input=" + key_word[i].value + "&userId=" + userId;
+				 			//var data = "input=JENIX DSC700&userId="+userId;
 				 			var price = s_price[i].value;
 				 			price = price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 				 			//getItem(data);
@@ -246,7 +246,7 @@
             	<!-- <a href="${path}/document/applicant_excelUpload_form.xlsx" class="btn btn btn-primary btn-lg">양식파일 다운로드</a> -->
 				<input type="text" id="uploadView" style="margin-left: 900" value="${pageMaker.totalCount} 건" />
 			</div>
-			
+						
 			<c:forEach items="${listAll}" var="list">
 				<input type="hidden" name="s_price" value="${list.price_two}" />
 				<input type="hidden" name="s_item" value="${list.item_nm}" />

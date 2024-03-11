@@ -14,16 +14,18 @@ public class NaverShopSearch {
 	public String search() throws Exception {
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Naver-Client-Id", "q2rgNFqo261t37lqiYrf");
-        headers.add("X-Naver-Client-Secret", "6WdM8Wq3mI");
+        //headers.add("X-Naver-Client-Id", "q2rgNFqo261t37lqiYrf");
+        //headers.add("X-Naver-Client-Secret", "6WdM8Wq3mI");
+        headers.add("X-Naver-Client-Id", "Ht2MQLw6laQKDnwTWTG4");
+        headers.add("X-Naver-Client-Secret", "YcqrlzpBex");
 
         StringBuilder sb = new StringBuilder();
         String body = sb.toString();
 
-        String item = "JENIX DSC700";
+        String item = "SUNWAY 145";
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
-        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=used&sort=asc&display=1", HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=rental:cbshop&sort=asc&display=100", HttpMethod.GET, requestEntity, String.class);
         HttpStatus httpStatus = responseEntity.getStatusCode();
         int status = httpStatus.value();
         

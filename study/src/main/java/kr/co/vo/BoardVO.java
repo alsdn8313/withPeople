@@ -23,6 +23,7 @@ public class BoardVO {
 	
 	private String userId;
 	private String gubun;
+	private String input;
 	
 	
 	public String getB_no() {
@@ -126,6 +127,12 @@ public class BoardVO {
 	}
 	public void setGubun(String gubun) {
 		this.gubun = gubun;
+	}
+	public String getInput() {
+		return input;
+	}
+	public void setInput(String input) {
+		this.input = input;
 	}
 	
 	

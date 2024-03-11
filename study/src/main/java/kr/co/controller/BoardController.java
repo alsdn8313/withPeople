@@ -95,23 +95,29 @@ public class BoardController {
 	// 검색
 	@RequestMapping(value = "/board/search", produces = "application/text; charset=utf8", method = RequestMethod.GET)
 	@ResponseBody
-	public String search(String input) throws Exception{
+	public String search(BoardVO boardVO) throws Exception{
 		logger.info("search");
 		
 		RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Naver-Client-Id", "q2rgNFqo261t37lqiYrf");
-        headers.add("X-Naver-Client-Secret", "6WdM8Wq3mI");
+        if("wp".equals(boardVO.getUserId())){
+        	headers.add("X-Naver-Client-Id", "q2rgNFqo261t37lqiYrf");
+        	headers.add("X-Naver-Client-Secret", "6WdM8Wq3mI");
+        	
+        }else if("park".equals(boardVO.getUserId())){
+        	headers.add("X-Naver-Client-Id", "Ht2MQLw6laQKDnwTWTG4");
+        	headers.add("X-Naver-Client-Secret", "YcqrlzpBex");
+        }
 
         StringBuilder sb = new StringBuilder();
         String body = sb.toString();
         
-        logger.info(input);
+        logger.info(boardVO.getInput());
         
         //String item = "SSE-30PA";
-        String item = input;
+        String item = boardVO.getInput();
         
-        Thread.sleep(30);
+        Thread.sleep(50);
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
         ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=rental:cbshop&sort=asc&display=100", HttpMethod.GET, requestEntity, String.class);
@@ -128,6 +134,7 @@ public class BoardController {
 		
 	}
 	
+	@SuppressWarnings("resource")
 	@RequestMapping(value = "/board/excelDown")
 	public void excelDownload(HttpServletResponse response, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		XSSFWorkbook wb=null;
@@ -225,38 +232,100 @@ public class BoardController {
 	@RequestMapping(value = "/board/readExcel", method = RequestMethod.POST)
 	public String readExcel(@RequestParam("file") MultipartFile file, Model model, BoardVO boardvo) throws Exception {
 	 
+		@SuppressWarnings("resource")
 		XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
 	    XSSFSheet worksheet = workbook.getSheetAt(0);
 	    FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();	
 	    
 	    service.deleteList(boardvo);
 	    
-	    for(int i=1;i<worksheet.getPhysicalNumberOfRows() ;i++) {
-	        BoardVO excel = new BoardVO();
-	           
-	        
-	        DataFormatter formatter = new DataFormatter();		        
-	        XSSFRow row = worksheet.getRow(i);
-	        	    	
-	        String b_no = Integer.toString(i);
-	        String i_no = formatter.formatCellValue(row.getCell(0));
-	        String item_nm = formatter.formatCellValue(row.getCell(1));
-	        String price_one = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(2)));
-	        String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
-	        String item_count = formatter.formatCellValue(row.getCell(4));
-	        String key_word = formatter.formatCellValue(row.getCell(5));
-	        
-	        excel.setB_no(b_no);
-	        excel.setI_no(i_no);
-	        excel.setItem_nm(item_nm);
-	        excel.setPrice_one(price_one);
-	        excel.setPrice_two(price_two);
-	        excel.setItem_count(item_count);
-	        excel.setKey_word(key_word);
-	        excel.setUserId(boardvo.getUserId());
-  
-	        service.write(excel);
-	    } 
+	    logger.info("로우 : " + worksheet.getPhysicalNumberOfRows());
+	    
+	    if(worksheet.getPhysicalNumberOfRows() <= 5000){
+	    	logger.info("5000개이하");
+	    	for(int i=1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+	    		BoardVO excel = new BoardVO();
+	    		
+	    		DataFormatter formatter = new DataFormatter();		        
+	    		XSSFRow row = worksheet.getRow(i);
+	    		
+	    		String b_no = Integer.toString(i);
+	    		String i_no = formatter.formatCellValue(row.getCell(0));
+	    		String item_nm = formatter.formatCellValue(row.getCell(1));
+	    		String price_one = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(2)));
+	    		String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
+	    		String item_count = formatter.formatCellValue(row.getCell(4));
+	    		String key_word = formatter.formatCellValue(row.getCell(5));
+	    		
+	    		excel.setB_no(b_no);
+	    		excel.setI_no(i_no);
+	    		excel.setItem_nm(item_nm);
+	    		excel.setPrice_one(price_one);
+	    		excel.setPrice_two(price_two);
+	    		excel.setItem_count(item_count);
+	    		excel.setKey_word(key_word);
+	    		excel.setUserId(boardvo.getUserId());
+	    		
+	    		service.write(excel);
+	    	} 
+	    	
+	    }else{
+	    	logger.info("5000개이상");
+	    	for(int i=1; i < 5000; i++) {
+	    		BoardVO excel = new BoardVO();
+	    		
+	    		DataFormatter formatter = new DataFormatter();		        
+	    		XSSFRow row = worksheet.getRow(i);
+	    		
+	    		String b_no = Integer.toString(i);
+	    		String i_no = formatter.formatCellValue(row.getCell(0));
+	    		String item_nm = formatter.formatCellValue(row.getCell(1));
+	    		String price_one = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(2)));
+	    		String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
+	    		String item_count = formatter.formatCellValue(row.getCell(4));
+	    		String key_word = formatter.formatCellValue(row.getCell(5));
+	    		
+	    		excel.setB_no(b_no);
+	    		excel.setI_no(i_no);
+	    		excel.setItem_nm(item_nm);
+	    		excel.setPrice_one(price_one);
+	    		excel.setPrice_two(price_two);
+	    		excel.setItem_count(item_count);
+	    		excel.setKey_word(key_word);
+	    		excel.setUserId(boardvo.getUserId());
+	    		
+	    		service.write(excel);
+	    	} 
+	    	
+	    	Thread.sleep(10000);
+	    	
+	    	for(int i=5000; i < worksheet.getPhysicalNumberOfRows(); i++) {
+	    		BoardVO excel = new BoardVO();
+	    		
+	    		DataFormatter formatter = new DataFormatter();		        
+	    		XSSFRow row = worksheet.getRow(i);
+	    		
+	    		String b_no = Integer.toString(i);
+	    		String i_no = formatter.formatCellValue(row.getCell(0));
+	    		String item_nm = formatter.formatCellValue(row.getCell(1));
+	    		String price_one = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(2)));
+	    		String price_two = formatter.formatCellValue(evaluator.evaluateInCell(row.getCell(3)));
+	    		String item_count = formatter.formatCellValue(row.getCell(4));
+	    		String key_word = formatter.formatCellValue(row.getCell(5));
+	    		
+	    		excel.setB_no(b_no);
+	    		excel.setI_no(i_no);
+	    		excel.setItem_nm(item_nm);
+	    		excel.setPrice_one(price_one);
+	    		excel.setPrice_two(price_two);
+	    		excel.setItem_count(item_count);
+	    		excel.setKey_word(key_word);
+	    		excel.setUserId(boardvo.getUserId());
+	    		
+	    		service.write(excel);
+	    	}
+	    }
+	    
 	    return "true";
 	}
 	
