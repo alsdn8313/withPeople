@@ -8,16 +8,20 @@
 </style>
 <nav class="navbar navbar-expand-md bg-white navbar-white container" style="height: 100px;">
 	<a class="navbar-brand" href="${path}/"><img src="/resources/img/logo.png" width="50px;" height="50px;"/></a>
+	<%-- <a class="navbar-brand" href="${path}/"><img src="/resources/img/logo.png" width="50px;" height="50px;"/>the lowest price comparison system</a> --%>
 	<ul class="navbar-nav">
-		<c:choose>
+		<%-- <c:choose>
 		    <c:when test="${member.userId == null}">
 		        <li class="nav-item"><a class="nav-link text-dark" href="${path}">로그인</a></li>
 		    </c:when>
 		    <c:otherwise>
-		        <%-- <a class="navbar-brand">${member.userName}님이 로그인중입니다.</a> --%>
+		        <a class="navbar-brand">${member.userName}님이 로그인중입니다.</a>
 		        <li class="nav-item"><a class="nav-link text-dark" href="${path}/member/logout">로그아웃</a></li>
 		    </c:otherwise>
-		</c:choose>
+		</c:choose> --%>
+		<c:if test="${member.userId != null}">
+			<li class="nav-item"><a class="nav-link text-dark" href="${path}/member/logout">로그아웃</a></li>
+		</c:if>
 		<c:choose>
 		    <c:when test="${member.userId == null}">
 		        <li class="nav-item"><a class="nav-link text-dark" id="registerBtn" type="button">회원가입</a></li>

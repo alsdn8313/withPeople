@@ -65,7 +65,7 @@
 						//$(".i_tr").empty();
 						
 						var key_word = document.getElementsByName("s_word");
-						//var key_word = document.getElementsByName("s_item");
+						var key_items = document.getElementsByName("s_item");
 						var s_price = document.getElementsByName("s_price");
 						
 				 		for(var i = 0; i < key_word.length; i++){
@@ -73,9 +73,9 @@
 				 			var data = "input=" + key_word[i].value + "&userId=" + userId;
 				 			//var data = "input=JENIX DSC700&userId="+userId;
 				 			var price = s_price[i].value;
+				 			var key_item = key_items[i].value;
 				 			price = price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 				 			//getItem(data);
-				 			
 				 			$.ajax({
 					 	        
 				                url:"/board/search",
@@ -112,7 +112,8 @@
 						        	 		//html += "</table>";
 						        	 		
 						        	 		//$("#display_1").append(html);
-						        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId);
+						        	 		
+						        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
 						        	 		return;
 				                    	}
 				                    }
@@ -120,8 +121,11 @@
 				        	 		
 				                },
 				                
-				                error: function() {
-				                    alert("에러 발생");
+				                error: function(e) {
+				                    //alert("에러 발생");
+				                    console.log(e);
+				                    insertItemError(i,key_item[i].value,key_word[i].value,userId);
+				                    return;
 				                }
 				          		
 				            });//ajax end
@@ -156,11 +160,11 @@
 			
 		});
 	 	
-		function insertItem(s_num, s_item, s_lprice, s_maker, s_brand, s_price, s_mall_nm, userId) {
+		function insertItem(s_num, s_item, s_lprice, s_maker, s_brand, s_price, s_mall_nm, userId, key_item) {
 			
 			s_num = Number(s_num + 1);
 			
-			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice+"&s_maker="+s_maker+"&s_brand="+s_brand+"&s_price="+s_price+"&s_mall_nm="+s_mall_nm+"&userId="+userId;
+			data = "s_num="+s_num+"&s_item="+s_item+"&s_lprice="+s_lprice+"&s_maker="+s_maker+"&s_brand="+s_brand+"&s_price="+s_price+"&s_mall_nm="+s_mall_nm+"&userId="+userId+"&key_item="+key_item;
 			
 			$.ajax({
 			    url: "/board/insertItem",
@@ -204,6 +208,22 @@
 		function uploadView() {
 			window.open("/board/uploadView?userId=${member.userId}", "_blank", "width=700, height=300");
 		}
+		
+		
+		function insertItemError(e_num, e_item, e_key, userId) {
+			
+			e_num = Number(e_num + 1);
+			
+			data = "e_num="+e_num+"&e_item="+e_item+"&e_key="+e_key+"&userId="+userId;
+			
+			$.ajax({
+			    url: "/board/insertItemError",
+			    type: "get",
+			    data: data,
+			});
+			
+		}
+		
 		
 	</script>
 	
@@ -256,7 +276,7 @@
 			<section class="container" style="margin-top: 10px;">
 				<form role="form" method="get">
 					<table class="table table-hover">
-						<tr><th>번호</th><th>상품번호</th><th>상품명</th><th>가격_1</th><th>가격_2</th><th>수량</th><th>검색어</th><!-- <th>등록일</th> --></tr>
+						<tr><th>번호</th><th>상품번호</th><th>상품명</th><!-- <th>가격_1</th> --><th>가격</th><th>수량</th><th>검색어</th><!-- <th>등록일</th> --></tr>
 
 					<c:forEach items="${list}" var="list">
 						<%-- <tr>
@@ -272,8 +292,8 @@
 						<colgroup>
 						    <col style="width:5%">
 						    <col style="width:10%">
-						    <col style="width:40%">
-						    <col style="width:10%">
+						    <col style="width:50%">
+						    <%-- <col style="width:10%"> --%>
 						    <col style="width:10%">
 						    <col style="width:5%">
 						    <col style="width:30%">
@@ -282,7 +302,7 @@
 							<td><c:out value="${list.b_no}" /></td>
 							<td><c:out value="${list.i_no}" /></td>
 							<td><c:out value="${list.item_nm}" /></td>
-							<td><c:out value="${list.price_one}" /></td>
+							<%-- <td><c:out value="${list.price_one}" /></td> --%>
 							<td><c:out value="${list.price_two}" /></td>
 							<td><c:out value="${list.item_count}" /></td>
 							<td><c:out value="${list.key_word}" /></td>

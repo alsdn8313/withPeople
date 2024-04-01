@@ -30,4 +30,6 @@ public interface BoardService {
 	public int excelListCount(SearchCriteria scri) throws Exception;
 	
 	public void deleteList(BoardVO boardVO) throws Exception;
+	
+	public void writeItemError(BoardVO boardVO) throws Exception;
 }

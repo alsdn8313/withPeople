@@ -109,6 +109,7 @@
 	   					      , S_MALL_NM
 	   					      , S_PRICE
 	   					      , USERID
+	   					      , KEY_ITEM
 	   					      )
 	                 VALUES(     
 	                 		  #{s_num}
@@ -119,6 +120,7 @@
 	                 		  , #{s_mall_nm}
 	                 		  , #{s_price}
 	                 		  , #{userId}
+	                 		  , #{key_item}
 	                 		)   
    
    </insert>
@@ -155,6 +157,7 @@
 		   , S_BRAND
 		   , S_MALL_NM
 		   , S_PRICE
+		   , KEY_ITEM
 	    FROM item.WP_ITEMS_SRCH
 	    WHERE 1=1
 	    AND USERID = #{userId}
@@ -172,6 +175,7 @@
 		   , S_BRAND
 		   , S_MALL_NM
 		   , S_PRICE
+		   , KEY_ITEM
 		FROM(   
 	   	    SELECT   S_NUM
 				   , S_ITEM
@@ -180,6 +184,7 @@
 				   , S_BRAND
 				   , S_MALL_NM
 				   , S_PRICE
+				   , KEY_ITEM
 				   , ROW_NUMBER() OVER(ORDER BY CAST(S_NUM AS INTEGER)) AS RNUM
 			  FROM item.WP_ITEMS_SRCH
 			  WHERE 1=1
@@ -208,5 +213,19 @@
 		</if>
 	</sql>
    
+   <insert id="insertItemError">
+	   INSERT INTO item.WP_ITEMS_SRCH_ERROR( E_NUM  
+	   					      , E_ITEM 
+	   					      , E_KEY
+	   					      , USERID
+	   					      )
+	                 VALUES(     
+	                 		  #{e_num}
+	                 		  , #{e_item}
+	                 		  , #{e_key}
+	                 		  , #{userId}
+	                 		)   
+   
+   </insert>
    
 </mapper>

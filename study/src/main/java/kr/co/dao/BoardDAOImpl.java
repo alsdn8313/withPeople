@@ -76,4 +76,10 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		sqlSession.delete("boardMapper.deleteList", boardVO);
 	}
+	
+	@Override
+	public void writeItemError(BoardVO boardVO) throws Exception {
+		sqlSession.insert("boardMapper.insertItemError", boardVO);
+		
+	}
 }

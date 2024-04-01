@@ -22,10 +22,11 @@ public class NaverShopSearch {
         StringBuilder sb = new StringBuilder();
         String body = sb.toString();
 
-        String item = "SUNWAY 145";
+        String item = "AX40";
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
-        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=rental:cbshop&sort=asc&display=100", HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=rental:cbshop&sort=asc&display=1", HttpMethod.GET, requestEntity, String.class);
+        //ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&include=used&sort=asc&display=1", HttpMethod.GET, requestEntity, String.class);
         HttpStatus httpStatus = responseEntity.getStatusCode();
         int status = httpStatus.value();
         

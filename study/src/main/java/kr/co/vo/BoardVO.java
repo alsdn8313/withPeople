@@ -25,6 +25,13 @@ public class BoardVO {
 	private String gubun;
 	private String input;
 	
+	private String e_num;
+	private String e_item;
+	private String e_key;
+	
+	private String key_item;
+	
+	
 	
 	public String getB_no() {
 		return b_no;
@@ -133,6 +140,30 @@ public class BoardVO {
 	}
 	public void setInput(String input) {
 		this.input = input;
+	}
+	public String getE_num() {
+		return e_num;
+	}
+	public void setE_num(String e_num) {
+		this.e_num = e_num;
+	}
+	public String getE_item() {
+		return e_item;
+	}
+	public void setE_item(String e_item) {
+		this.e_item = e_item;
+	}
+	public String getE_key() {
+		return e_key;
+	}
+	public void setE_key(String e_key) {
+		this.e_key = e_key;
+	}
+	public String getKey_item() {
+		return key_item;
+	}
+	public void setKey_item(String key_item) {
+		this.key_item = key_item;
 	}
 	
 	

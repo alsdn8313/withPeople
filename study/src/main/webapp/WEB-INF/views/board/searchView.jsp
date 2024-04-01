@@ -54,7 +54,7 @@
 			<section class="container">
 				<form role="form" method="get" name="frm">
 					<table class="table table-hover">
-						<tr><th>번호</th><th>제품명</th><!--<th>제조사</th><th>브랜드</th>--><th>판매처</th><th>최저가격</th><th>기존가격</th></tr>
+						<tr><th>번호</th><th>검색 상품명</th><th>최저가 상품명</th><!--<th>제조사</th><th>브랜드</th>--><th>판매처</th><th>최저가격</th><th>기존가격</th></tr>
 						<c:forEach items="${list}" var="list">
 						<%-- <tr>
 							<td><input name="s_num" 		value="${list.s_num}"  		style="width: 40px;" readonly="readonly" class='chk'/></td>
@@ -67,13 +67,15 @@
 						</tr> --%>
 						<colgroup>
 						    <col style="width:5%">
-						    <col style="width:40%">
-						    <col style="width:35%">
+						    <col style="width:27%">
+						    <col style="width:28%">
+						    <col style="width:20%">
 						    <col style="width:10%">
 						    <col style="width:10%">
 						 </colgroup>
 						<tr>
 							<td class='chk'><c:out value="${list.s_num}" /></td>
+							<td><c:out value="${list.key_item}" /></td>
 							<td><c:out value="${list.s_item}" /></td>
 							<td><c:out value="${list.s_mall_nm}" /></td>
 							<td><c:out value="${list.s_lprice}" /></td>

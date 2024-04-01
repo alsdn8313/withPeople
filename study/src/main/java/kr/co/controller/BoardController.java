@@ -151,12 +151,14 @@ public class BoardController {
 		cell=row.createCell(0);
 		cell.setCellValue("번호");
 		cell=row.createCell(1);
-		cell.setCellValue("상품명");
+		cell.setCellValue("검색 상품명");
 		cell=row.createCell(2);
-		cell.setCellValue("판매처");
+		cell.setCellValue("최저가 상품명");
 		cell=row.createCell(3);
-		cell.setCellValue("최저가격");
+		cell.setCellValue("판매처");
 		cell=row.createCell(4);
+		cell.setCellValue("최저가격");
+		cell=row.createCell(5);
 		cell.setCellValue("기존가격");
 		
 		for(int i=0; i < freeBoardList.size() ; i++  ) {
@@ -164,6 +166,8 @@ public class BoardController {
 			int cellCount=0; //열 번호 초기화
 			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_num());
+			cell=row.createCell(cellCount++);
+			cell.setCellValue(freeBoardList.get(i).getKey_item());
 			cell=row.createCell(cellCount++);
 			cell.setCellValue(freeBoardList.get(i).getS_item());
 			cell=row.createCell(cellCount++);
@@ -328,6 +332,14 @@ public class BoardController {
 	    
 	    return "true";
 	}
+	
+	@RequestMapping(value = "/board/insertItemError", method = RequestMethod.GET)
+	@ResponseBody
+	public void writeItemError(BoardVO boardVO) throws Exception{
+		
+		service.writeItemError(boardVO);
+	}
+	
 	
 	/*private String returnStringValue(XSSFWorkbook workbook, Cell cell) { 	    
 		CellType cellType = cell.getCellType(); 	    

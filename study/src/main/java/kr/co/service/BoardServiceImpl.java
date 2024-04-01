@@ -76,4 +76,11 @@ public class BoardServiceImpl implements BoardService {
 		
 		dao.deleteList(boardVO);
 	}
+	
+	@Override
+	public void writeItemError(BoardVO boardVO) throws Exception {
+		dao.writeItemError(boardVO);
+		
+	}
+	
 }
