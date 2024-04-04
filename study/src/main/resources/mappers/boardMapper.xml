@@ -129,12 +129,13 @@
    <select id="listItem" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
   	    SELECT
 		   , S_NUM
-		   , S_ITEM
-		   , S_lPRICE
-		   , S_MAKER
-		   , S_BRAND
-		   , S_MALL_NM
+		   , IF(S_ITEM = 'undefined', '검색안됨', S_ITEM) AS S_ITEM
+		   , IF(S_lPRICE = 'undefined', '검색안됨', S_lPRICE) AS S_lPRICE
+		   , IF(S_MAKER = 'undefined', '검색안됨', S_MAKER) AS S_MAKER
+		   , IF(S_BRAND = 'undefined', '검색안됨', S_BRAND) AS S_BRAND
+		   , IF(S_MALL_NM = 'undefined', '검색안됨', S_MALL_NM) AS S_MALL_NM
 		   , S_PRICE
+		   , KEY_ITEM
 	    FROM item.WP_ITEMS_SRCH
 	    WHERE 1=1
 	    AND USERID = #{userId}
@@ -151,11 +152,11 @@
 	<select id="excelList" resultType="kr.co.vo.BoardVO" parameterType="kr.co.vo.Criteria">
   	    SELECT
 		     S_NUM
-		   , S_ITEM
-		   , S_lPRICE
-		   , S_MAKER
-		   , S_BRAND
-		   , S_MALL_NM
+		   , IF(S_ITEM = 'undefined', '검색안됨', S_ITEM) AS S_ITEM
+		   , IF(S_lPRICE = 'undefined', '검색안됨', S_lPRICE) AS S_lPRICE
+		   , IF(S_MAKER = 'undefined', '검색안됨', S_MAKER) AS S_MAKER
+		   , IF(S_BRAND = 'undefined', '검색안됨', S_BRAND) AS S_BRAND
+		   , IF(S_MALL_NM = 'undefined', '검색안됨', S_MALL_NM) AS S_MALL_NM
 		   , S_PRICE
 		   , KEY_ITEM
 	    FROM item.WP_ITEMS_SRCH
@@ -178,11 +179,11 @@
 		   , KEY_ITEM
 		FROM(   
 	   	    SELECT   S_NUM
-				   , S_ITEM
-				   , S_lPRICE
-				   , S_MAKER
-				   , S_BRAND
-				   , S_MALL_NM
+				   , IF(S_ITEM = 'undefined', '검색안됨', S_ITEM) AS S_ITEM
+				   , IF(S_lPRICE = 'undefined', '검색안됨', S_lPRICE) AS S_lPRICE
+				   , IF(S_MAKER = 'undefined', '검색안됨', S_MAKER) AS S_MAKER
+				   , IF(S_BRAND = 'undefined', '검색안됨', S_BRAND) AS S_BRAND
+				   , IF(S_MALL_NM = 'undefined', '검색안됨', S_MALL_NM) AS S_MALL_NM
 				   , S_PRICE
 				   , KEY_ITEM
 				   , ROW_NUMBER() OVER(ORDER BY CAST(S_NUM AS INTEGER)) AS RNUM

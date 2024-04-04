@@ -114,8 +114,10 @@
 						        	 		//$("#display_1").append(html);
 						        	 		
 						        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
-						        	 		return;
+				                    	}else{
+				                    		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
 				                    	}
+					                	return;
 				                    }
 				        	 		
 				        	 		
