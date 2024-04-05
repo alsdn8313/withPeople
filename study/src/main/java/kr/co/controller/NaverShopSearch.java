@@ -22,7 +22,7 @@ public class NaverShopSearch {
         StringBuilder sb = new StringBuilder();
         String body = sb.toString();
 
-        String item = "AX40";
+        String item = "GAS SH-3500[3]";
         
         HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);
         ResponseEntity<String> responseEntity = rest.exchange("https://openapi.naver.com/v1/search/shop.json?query="+item+"&exclude=rental:cbshop&sort=asc&display=1", HttpMethod.GET, requestEntity, String.class);

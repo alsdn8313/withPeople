@@ -70,8 +70,11 @@
 						
 				 		for(var i = 0; i < key_word.length; i++){
 				 		//for(var i = 0; i < 1; i++){
-				 			var data = "input=" + key_word[i].value + "&userId=" + userId;
-				 			//var data = "input=JENIX DSC700&userId="+userId;
+				 			var data_key = key_word[i].value;
+				 			data_key = data_key.replace('[','');
+				 			data_key = data_key.replace(']','');
+				 			var data = "input=" + data_key + "&userId=" + userId;
+				 			//var data = "input=GAS SH-3500[3]&userId="+userId;
 				 			var price = s_price[i].value;
 				 			var key_item = key_items[i].value;
 				 			price = price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
@@ -89,37 +92,40 @@
 				            	
 				                success: function(data) {
 				                    //resultHtml(data);
-				                    for(var j = 0; j < data.items.length; j++){
-					                	var items = data.items;
-				                    	
-					                	if(items[j].productType == "4" || items[j].productType == "5" || items[j].productType == "6"){
-				                    	
-						                    var productType = items[j].productType; 
-						                    var v_title = items[j].title;
-						                    var title = v_title.replace(/b|\/|<|>/g,"");
-						                    var lprice = items[j].lprice;
-						                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
-						                    var maker = items[j].maker;
-						                    var brand = items[j].brand;
-						                    var mall_nm = items[j].mallName;
-											
-						                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
-						         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
-						         			html += "<td name='s_title' id='s_title' style='width: 800; text-align: left;'>" + title + "</td>";
-						         			html += "<td name='s_lprice' id='s_lprice' style='width: 100; text-align: right;'>" + lprice + "</td>";
-						         			html += "</tr>"; */
-						        	 	
-						        	 		//html += "</table>";
-						        	 		
-						        	 		//$("#display_1").append(html);
-						        	 		
-						        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
-				                    	}else{
-				                    		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
-				                    	}
-					                	return;
+				                    if(data.items.length > 0){
+				                    	for(var j = 0; j < data.items.length; j++){
+						                	var items = data.items;
+					                    	
+						                	if(items[j].productType == "4" || items[j].productType == "5" || items[j].productType == "6"){
+					                    	
+							                    var productType = items[j].productType; 
+							                    var v_title = items[j].title;
+							                    var title = v_title.replace(/b|\/|<|>/g,"");
+							                    var lprice = items[j].lprice;
+							                    lprice = lprice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+							                    var maker = items[j].maker;
+							                    var brand = items[j].brand;
+							                    var mall_nm = items[j].mallName;
+												
+							                    /* var html = "<tr align='center' style='border: 1px; border-color:black;' class='i_tr'>";
+							         			html += "<td name='s_num' id='s_num' class='chk' style='width: 50; text-align: left;'>" + Number(i+1) + "</td>";
+							         			html += "<td name='s_title' id='s_title' style='width: 800; text-align: left;'>" + title + "</td>";
+							         			html += "<td name='s_lprice' id='s_lprice' style='width: 100; text-align: right;'>" + lprice + "</td>";
+							         			html += "</tr>"; */
+							        	 	
+							        	 		//html += "</table>";
+							        	 		
+							        	 		//$("#display_1").append(html);
+							        	 		
+							        	 		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
+					                    	}else{
+					                    		insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
+					                    	}
+						                	return;
+					                    }
+				                    }else{
+				                    	insertItem(i,title,lprice,maker,brand,price,mall_nm,userId, key_item);
 				                    }
-				        	 		
 				        	 		
 				                },
 				                
